@@ -1,0 +1,1903 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>英语练习室 · 六级冲刺与口语</title>
+<meta name="theme-color" content="#2f6f4f">
+<meta name="description" content="六级 22 天冲刺计划 + 口语陪练 + 听力记忆训练，可安装到手机主屏幕，离线可用。">
+<meta name="apple-mobile-web-app-title" content="英语练习室">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<style>
+  :root{
+    --ink:#1d2433; --ink-2:#4a5468; --ink-3:#7c869c;
+    --bg:#f6f4ef; --card:#ffffff; --line:#e6e1d8;
+    --green:#2f6f4f; --green-soft:#e3efe7;
+    --amber:#b8762a; --amber-soft:#fbf0e0;
+    --red:#b24a3f; --red-soft:#fbe9e6;
+    --blue:#2f5d8a; --blue-soft:#e6eef7;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(29,36,51,.05),0 8px 24px -12px rgba(29,36,51,.18);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Segoe UI","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+    font-size:15px;line-height:1.65;
+  }
+  button{font-family:inherit}
+  a{color:var(--green);text-decoration:none;border-bottom:1px solid rgba(47,111,79,.3)}
+  a:hover{border-bottom-color:var(--green)}
+
+  /* ---------- 布局 ---------- */
+  .shell{display:flex;min-height:100vh}
+  .side{
+    width:240px;flex:0 0 240px;background:#fffdf9;border-right:1px solid var(--line);
+    padding:22px 16px;position:sticky;top:0;height:100vh;overflow-y:auto;
+  }
+  .brand{font-weight:700;font-size:17px;letter-spacing:.3px;margin:0 0 2px}
+  .brand-sub{font-size:12px;color:var(--ink-3);margin-bottom:22px}
+  .nav{display:flex;flex-direction:column;gap:3px}
+  .nav button{
+    text-align:left;background:none;border:0;border-radius:9px;padding:9px 12px;
+    font-size:14px;color:var(--ink-2);cursor:pointer;display:flex;align-items:center;gap:9px;
+    transition:background .15s,color .15s;
+  }
+  .nav button:hover{background:#f2efe8}
+  .nav button.on{background:var(--green-soft);color:var(--green);font-weight:600}
+  .nav .ico{width:18px;text-align:center;font-size:15px;opacity:.9}
+  .side-foot{margin-top:26px;padding-top:16px;border-top:1px dashed var(--line);font-size:12px;color:var(--ink-3)}
+  .side-foot b{color:var(--ink-2)}
+
+  main{flex:1;min-width:0;padding:30px 38px 70px;max-width:1120px}
+  .page{display:none}
+  .page.on{display:block;animation:fade .25s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  h1{font-size:24px;margin:0 0 6px;letter-spacing:.2px}
+  h2{font-size:18px;margin:30px 0 12px;letter-spacing:.2px}
+  h3{font-size:15px;margin:18px 0 8px}
+  .lead{color:var(--ink-2);margin:0 0 22px;max-width:78ch}
+  .muted{color:var(--ink-3);font-size:13px}
+  .small{font-size:13px}
+
+  /* ---------- 组件 ---------- */
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;box-shadow:var(--shadow)}
+  .grid{display:grid;gap:14px}
+  .g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+  @media(max-width:980px){.g3,.g4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media(max-width:720px){
+    .shell{display:block}.side{position:static;width:auto;height:auto;border-right:0;border-bottom:1px solid var(--line)}
+    .nav{flex-direction:row;flex-wrap:wrap}.nav button{padding:7px 10px;font-size:13px}
+    main{padding:20px 16px 60px}.g2,.g3,.g4{grid-template-columns:1fr}
+  }
+
+  .tag{display:inline-block;font-size:12px;padding:1px 9px;border-radius:99px;background:#f0ede6;color:var(--ink-2);white-space:nowrap}
+  .tag.green{background:var(--green-soft);color:var(--green)}
+  .tag.amber{background:var(--amber-soft);color:var(--amber)}
+  .tag.red{background:var(--red-soft);color:var(--red)}
+  .tag.blue{background:var(--blue-soft);color:var(--blue)}
+
+  .btn{
+    background:var(--green);color:#fff;border:0;border-radius:10px;padding:10px 18px;
+    font-size:14px;font-weight:600;cursor:pointer;transition:filter .15s,transform .05s;
+  }
+  .btn:hover{filter:brightness(1.07)}
+  .btn:active{transform:translateY(1px)}
+  .btn:disabled{background:#b9c4bd;cursor:not-allowed}
+  .btn.ghost{background:#fff;color:var(--green);border:1px solid #c6d8cd;font-weight:600}
+  .btn.ghost:hover{background:var(--green-soft)}
+  .btn.amber{background:var(--amber)}
+  .btn.red{background:var(--red)}
+  .btn.small{padding:6px 12px;font-size:13px;border-radius:8px}
+  .btn-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+
+  /* 倒计时 */
+  .hero{
+    background:linear-gradient(120deg,#24523c 0%,#2f6f4f 55%,#3d7f5c 100%);
+    color:#fff;border-radius:18px;padding:26px 28px;margin-bottom:18px;
+    display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:center;
+    box-shadow:0 12px 32px -18px rgba(36,82,60,.7);
+  }
+  .hero .k{font-size:12px;letter-spacing:2px;text-transform:uppercase;opacity:.75}
+  .hero .n{font-size:15px;opacity:.85;margin-top:2px}
+  .count{display:flex;gap:22px;align-items:flex-end}
+  .count .unit{text-align:center}
+  .count .num{font-size:42px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+  .count .lab{font-size:12px;opacity:.8;margin-top:4px;letter-spacing:1px}
+
+  /* 分数 */
+  .score-row{display:flex;align-items:center;gap:14px;padding:9px 0;border-bottom:1px dashed var(--line)}
+  .score-row:last-child{border-bottom:0}
+  .score-row .name{width:74px;font-size:14px;color:var(--ink-2);flex:0 0 auto}
+  .bar{flex:1;height:9px;border-radius:99px;background:#eee9e0;overflow:hidden}
+  .bar > i{display:block;height:100%;border-radius:99px;background:var(--green)}
+  .bar > i.warn{background:var(--amber)}
+  .bar > i.bad{background:var(--red)}
+  .score-row .val{width:118px;text-align:right;font-size:13px;color:var(--ink-3);flex:0 0 auto;font-variant-numeric:tabular-nums}
+  .score-row .val b{color:var(--ink);font-size:14px}
+
+  /* 计划 */
+  .week-head{display:flex;align-items:baseline;gap:12px;margin:26px 0 10px}
+  .week-head .w{font-size:12px;font-weight:700;letter-spacing:1.5px;color:var(--amber);text-transform:uppercase}
+  .week-head h3{margin:0;font-size:17px}
+  .week-head .range{font-size:12px;color:var(--ink-3);margin-left:auto}
+  .day{border:1px solid var(--line);background:#fff;border-radius:12px;margin-bottom:10px;overflow:hidden}
+  .day-h{display:flex;align-items:center;gap:10px;padding:11px 15px;cursor:pointer;user-select:none}
+  .day-h:hover{background:#fbfaf7}
+  .day-h .d{font-weight:600;font-size:14px;min-width:74px}
+  .day-h .t{font-size:13px;color:var(--ink-2);flex:1}
+  .day-h .chev{color:var(--ink-3);font-size:12px;transition:transform .2s}
+  .day.open .chev{transform:rotate(90deg)}
+  .day-b{display:none;padding:2px 15px 14px;border-top:1px dashed var(--line)}
+  .day.open .day-b{display:block}
+  .task{display:flex;gap:10px;align-items:flex-start;padding:7px 0;font-size:14px}
+  .task input{margin:4px 0 0;width:16px;height:16px;accent-color:var(--green);flex:0 0 auto;cursor:pointer}
+  .task label{cursor:pointer;flex:1}
+  .task .mins{font-size:12px;color:var(--ink-3);white-space:nowrap;flex:0 0 auto;margin-left:6px}
+  .task input:checked + label{color:var(--ink-3);text-decoration:line-through;text-decoration-color:#c9c2b4}
+  .task .tip{display:block;font-size:12.5px;color:var(--ink-3);margin-top:2px}
+
+  .progress-wrap{display:flex;align-items:center;gap:12px;margin:8px 0 0}
+  .progress{flex:1;height:7px;background:#eee9e0;border-radius:99px;overflow:hidden}
+  .progress > i{display:block;height:100%;background:linear-gradient(90deg,#7fb08f,#2f6f4f);border-radius:99px;transition:width .3s}
+  .progress-wrap .pct{font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+
+  /* 路线图 */
+  .stage{position:relative;padding:0 0 26px 34px;border-left:2px solid #e2ddd2;margin-left:9px}
+  .stage:last-child{border-left-color:transparent;padding-bottom:0}
+  .stage::before{
+    content:"";position:absolute;left:-8px;top:2px;width:14px;height:14px;border-radius:50%;
+    background:#fff;border:3px solid var(--green);
+  }
+  .stage.now::before{background:var(--green);box-shadow:0 0 0 4px var(--green-soft)}
+  .stage .sh{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .stage .sh b{font-size:15.5px}
+  .stage .sh .when{font-size:12px;color:var(--ink-3)}
+  .stage p{margin:6px 0;font-size:14px;color:var(--ink-2)}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+
+  /* 口语练习 */
+  .prompt-card{
+    background:#fff;border:1px solid var(--line);border-radius:12px;padding:15px 17px;cursor:pointer;
+    transition:border-color .15s,box-shadow .15s,transform .1s;
+  }
+  .prompt-card:hover{border-color:#b9cdbf;box-shadow:0 6px 18px -12px rgba(47,111,79,.5)}
+  .prompt-card.on{border-color:var(--green);box-shadow:0 0 0 3px var(--green-soft)}
+  .prompt-card .q{font-size:14.5px;font-weight:600;line-height:1.5}
+  .prompt-card .zh{font-size:13px;color:var(--ink-3);margin-top:4px}
+  .prompt-card .meta{display:flex;gap:6px;margin-top:9px;flex-wrap:wrap}
+
+  .studio{display:grid;grid-template-columns:1.15fr .85fr;gap:16px}
+  @media(max-width:980px){.studio{grid-template-columns:1fr}}
+  .timer-box{text-align:center;padding:16px 0 6px}
+  .timer-box .clock{font-size:56px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:1px;line-height:1}
+  .timer-box .phase{font-size:13px;letter-spacing:2px;color:var(--ink-3);text-transform:uppercase;margin-bottom:8px}
+  .timer-box .clock.warn{color:var(--red)}
+  .rec-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--red);margin-right:6px;animation:pulse 1.1s infinite}
+  @keyframes pulse{50%{opacity:.25}}
+  .audio-row{margin-top:12px}
+  audio{width:100%;height:36px}
+  .transcript{
+    background:#fbfaf7;border:1px dashed var(--line);border-radius:10px;padding:10px 12px;
+    min-height:64px;font-size:13.5px;color:var(--ink-2);margin-top:12px;
+  }
+  .rubric-row{display:flex;align-items:center;gap:10px;padding:7px 0}
+  .rubric-row .rn{flex:1;font-size:13.5px}
+  .stars{display:flex;gap:3px}
+  .stars button{background:none;border:0;font-size:19px;line-height:1;cursor:pointer;color:#dcd6c8;padding:0 1px}
+  .stars button.lit{color:#d9a441}
+
+  .sentence{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:9px}
+  .sentence .en{font-size:15px;font-weight:600;line-height:1.55}
+  .sentence .cn{font-size:13px;color:var(--ink-3);margin-top:4px}
+  .sentence .row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-size:12px;letter-spacing:.5px;color:var(--ink-3);font-weight:600;text-transform:uppercase;background:#fbfaf7}
+  tr:last-child td{border-bottom:0}
+
+  .log-item{border:1px solid var(--line);border-radius:11px;padding:11px 14px;margin-bottom:8px;background:#fff;font-size:13.5px}
+  .log-item .top{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+  .log-item .top b{font-size:13.5px}
+  .log-item .date{font-size:12px;color:var(--ink-3)}
+
+  textarea,input[type=text],input[type=date],select{
+    width:100%;border:1px solid var(--line);border-radius:9px;padding:9px 11px;font-family:inherit;
+    font-size:14px;color:var(--ink);background:#fff;line-height:1.6;
+  }
+  textarea{resize:vertical;min-height:76px}
+  textarea:focus,input:focus,select:focus{outline:2px solid #cfe0d5;outline-offset:0;border-color:#a9c6b5}
+  .field{margin-bottom:12px}
+  .field label{display:block;font-size:13px;font-weight:600;margin-bottom:5px}
+  .field .hint{font-size:12px;color:var(--ink-3);font-weight:400;margin-left:6px}
+
+  details{border:1px solid var(--line);border-radius:11px;background:#fff;padding:0;margin-bottom:9px;overflow:hidden}
+  details summary{cursor:pointer;padding:11px 15px;font-weight:600;font-size:14px;list-style:none;display:flex;gap:9px;align-items:center}
+  details summary::-webkit-details-marker{display:none}
+  details[open] summary{border-bottom:1px dashed var(--line);background:#fbfaf7}
+  details .body{padding:13px 16px}
+  details .body p{margin:6px 0;font-size:13.8px;color:var(--ink-2)}
+
+  .note{border-left:3px solid var(--amber);background:var(--amber-soft);padding:11px 15px;border-radius:0 10px 10px 0;font-size:13.5px;color:#6b4a1d;margin:14px 0}
+  .note.green{border-left-color:var(--green);background:var(--green-soft);color:#234e38}
+  .note.blue{border-left-color:var(--blue);background:var(--blue-soft);color:#21456b}
+
+  footer{margin-top:46px;padding-top:16px;border-top:1px solid var(--line);font-size:12px;color:var(--ink-3)}
+  .hide{display:none !important}
+
+  /* ================= 手机适配（<680px） ================= */
+  @media (max-width:680px){
+    body{font-size:15.5px;-webkit-text-size-adjust:100%}
+    .shell{display:block}
+
+    /* 侧栏变成底部标签栏 */
+    .side{
+      position:fixed;left:0;right:0;bottom:0;top:auto;width:auto;height:auto;
+      border-right:0;border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom));
+      background:rgba(255,253,249,.97);backdrop-filter:blur(10px);z-index:100;
+    }
+    .brand,.brand-sub,.side-foot{display:none}
+    .nav{
+      display:grid;grid-template-columns:repeat(8,1fr);gap:0;
+    }
+    .nav button{
+      flex-direction:column;gap:2px;padding:6px 0;border-radius:8px;
+      font-size:9.5px;line-height:1.2;text-align:center;justify-content:center;
+      color:var(--ink-3);
+    }
+    .nav button .ico{font-size:16px;line-height:1}
+    .nav button.on{background:transparent;color:var(--green)}
+    .nav button.on .ico{transform:translateY(-1px)}
+
+    main{padding:18px 14px calc(96px + env(safe-area-inset-bottom));max-width:none}
+    h1{font-size:21px}
+    h2{font-size:17px;margin-top:24px}
+    .lead{font-size:14px}
+
+    /* 卡片更紧凑，按钮更适合手指 */
+    .card{padding:16px 15px;border-radius:13px}
+    .btn{padding:12px 18px;font-size:15px;min-height:44px}
+    .btn.small{padding:9px 13px;font-size:13.5px;min-height:38px}
+    .btn-row{gap:8px}
+    .btn-row .btn{flex:1 1 auto}
+
+    /* 首页 hero 纵向排 */
+    .hero{padding:20px 18px;gap:16px;border-radius:15px}
+    .hero .count{width:100%;justify-content:space-between;gap:0}
+    .count .num{font-size:36px}
+
+    /* 分数条 */
+    .score-row{gap:9px}
+    .score-row .name{width:52px;font-size:13px}
+    .score-row .val{width:auto;font-size:12px;text-align:right}
+
+    /* 计划：日期行更紧凑 */
+    .week-head{flex-wrap:wrap;gap:8px;margin-top:22px}
+    .week-head .range{margin-left:0;width:100%}
+    .day-h{padding:12px}
+    .day-h .d{min-width:52px;font-size:13.5px}
+    .day-h .t{font-size:12.5px}
+    .day-b{padding:2px 12px 12px}
+    .task{padding:9px 0;font-size:14.5px}
+    .task .mins{font-size:11.5px}
+
+    /* 口语：题卡两列→一列 */
+    .grid.g2,.grid.g3,.grid.g4{grid-template-columns:1fr}
+    .prompt-card{padding:13px 14px}
+    .prompt-card .q{font-size:14px}
+
+    /* 计时器与录音按钮更醒目 */
+    .timer-box{padding:10px 0 2px}
+    .timer-box .clock{font-size:64px}
+    .studio{grid-template-columns:1fr}
+
+    /* 句子卡、表格 */
+    .sentence{padding:13px 14px}
+    .sentence .en{font-size:14.5px}
+    table{font-size:13px}
+    th,td{padding:8px 7px}
+
+    /* 表单：避免 iOS 聚焦放大 */
+    textarea,input[type=text],input[type=date],select{font-size:16px;padding:10px 12px}
+    textarea{min-height:90px}
+
+    /* 底部弹出提示 */
+    .ios-tip{
+      position:fixed;left:10px;right:10px;bottom:calc(74px + env(safe-area-inset-bottom));
+      background:#24352b;color:#fff;border-radius:14px;padding:14px 16px;z-index:200;
+      font-size:13.5px;line-height:1.6;box-shadow:0 12px 30px -10px rgba(0,0,0,.5);
+      display:flex;gap:10px;align-items:flex-start;
+    }
+    .ios-tip b{color:#cfe6d7}
+    .ios-tip button{
+      background:none;border:0;color:#9fc4ae;font-size:18px;line-height:1;cursor:pointer;padding:0 2px;
+    }
+  }
+  .ios-tip{display:none}
+  @media (max-width:680px){ .ios-tip.show{display:flex} }
+
+  /* ================= 单词测试 ================= */
+  .vocab-top{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+  .seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;background:#fff}
+  .seg button{
+    border:0;background:none;padding:8px 13px;font-size:13px;cursor:pointer;font-family:inherit;
+    color:var(--ink-2);border-right:1px solid var(--line);
+  }
+  .seg button:last-child{border-right:0}
+  .seg button.on{background:var(--green-soft);color:var(--green);font-weight:600}
+
+  .q-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px 22px;box-shadow:var(--shadow);text-align:center}
+  .q-word{font-size:40px;font-weight:700;letter-spacing:.5px;line-height:1.15;word-break:break-word}
+  .q-hint{font-size:13px;color:var(--ink-3);margin-top:6px}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}
+  @media(max-width:560px){.opts{grid-template-columns:1fr}}
+  .opt{
+    text-align:left;background:#fff;border:1px solid var(--line);border-radius:11px;padding:12px 14px;
+    font-size:14.5px;cursor:pointer;font-family:inherit;color:var(--ink);line-height:1.5;
+    transition:border-color .12s,background .12s;
+  }
+  .opt:hover{border-color:#b9cdbf;background:#fbfdfb}
+  .opt.right{border-color:var(--green);background:var(--green-soft);color:#234e38;font-weight:600}
+  .opt.wrong{border-color:var(--red);background:var(--red-soft);color:#6d2a24}
+  .opt:disabled{cursor:default}
+
+  .q-meta{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:var(--ink-3);margin-bottom:10px}
+  .q-bar{height:6px;background:#eee9e0;border-radius:99px;overflow:hidden;margin-bottom:16px}
+  .q-bar > i{display:block;height:100%;background:linear-gradient(90deg,#7fb08f,#2f6f4f);transition:width .25s}
+  .q-feedback{font-size:13.5px;margin-top:14px;padding:11px 14px;border-radius:10px;text-align:left;line-height:1.65}
+  .q-feedback.ok{background:var(--green-soft);color:#234e38}
+  .q-feedback.no{background:var(--red-soft);color:#6d2a24}
+  .q-feedback b{font-size:14.5px}
+
+  .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+  @media(max-width:680px){.stat-grid{grid-template-columns:repeat(2,1fr)}}
+  .stat{background:#fff;border:1px solid var(--line);border-radius:11px;padding:11px 13px}
+  .stat .k{font-size:11.5px;color:var(--ink-3)}
+  .stat .v{font-size:22px;font-weight:700;line-height:1.2;font-variant-numeric:tabular-nums}
+
+  .result-line{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px dashed var(--line);font-size:13.5px}
+  .result-line:last-child{border-bottom:0}
+  .result-line .w{font-weight:600;min-width:120px}
+  .result-line .m{color:var(--ink-3);text-align:right;flex:1}
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="side">
+    <div class="brand">英语练习室</div>
+    <div class="brand-sub">六级冲刺 × 口语长跑</div>
+    <nav class="nav" id="nav">
+      <button data-page="home" class="on"><span class="ico">◎</span>总览</button>
+      <button data-page="sprint"><span class="ico">⏱</span>计划</button>
+      <button data-page="vocab"><span class="ico">▦</span>单词</button>
+      <button data-page="road"><span class="ico">◆</span>口语路线</button>
+      <button data-page="speak"><span class="ico">◉</span>口语陪练</button>
+      <button data-page="drill"><span class="ico">〰</span>跟读</button>
+      <button data-page="log"><span class="ico">▤</span>复盘</button>
+      <button data-page="res"><span class="ico">✳</span>资料</button>
+    </nav>
+    <div class="side-foot">
+      <div>考试：2026-12-12 15:00</div>
+      <div>距离 <b id="footDays">—</b> 天</div>
+      <div style="margin-top:8px"><a href="listening.html">听力记忆训练场 →</a></div>
+      <div style="margin-top:8px">数据只存在本机浏览器</div>
+    </div>
+  </aside>
+
+  <main>
+    <!-- ============ 总览 ============ -->
+    <section class="page on" id="page-home">
+      <div class="hero">
+        <div>
+          <div class="k">CET-6 · Dec 12, 2026</div>
+          <div class="n">下午 15:00–17:25 · 共 130 分钟</div>
+          <div style="margin-top:10px;font-size:13px;opacity:.92">
+            这个月只有一件事：<b>六级</b>。口语暂停，不做任何安排。<br>
+            把时间全部压在听力上——它是你唯一还在漏分的地方。
+          </div>
+          <button id="btnInstall" class="btn hide" style="margin-top:14px;background:#fff;color:#2f6f4f">
+            ＋ 安装到手机桌面
+          </button>
+        </div>
+        <div class="count">
+          <div class="unit"><div class="num" id="cdDays">—</div><div class="lab">天</div></div>
+          <div class="unit"><div class="num" id="cdHours">—</div><div class="lab">小时</div></div>
+          <div class="unit"><div class="num" id="cdMins">—</div><div class="lab">分</div></div>
+        </div>
+      </div>
+
+      <div class="grid g2">
+        <div class="card">
+          <h3 style="margin-top:0">你的底子：一组对照读数</h3>
+          <div class="score-row">
+            <span class="name">总分</span>
+            <span class="bar"><i style="width:84%"></i></span>
+            <span class="val"><b>597</b> / 710 · 84%</span>
+          </div>
+          <div class="score-row">
+            <span class="name">听力</span>
+            <span class="bar"><i class="warn" style="width:75%"></i></span>
+            <span class="val"><b>186</b> / 249 · 75%</span>
+          </div>
+          <div class="score-row">
+            <span class="name">阅读</span>
+            <span class="bar"><i style="width:86%"></i></span>
+            <span class="val"><b>215</b> / 249 · 86%</span>
+          </div>
+          <div class="score-row">
+            <span class="name">写译</span>
+            <span class="bar"><i style="width:92%"></i></span>
+            <span class="val"><b>196</b> / 212 · 92%</span>
+          </div>
+          <p class="muted" style="margin:12px 0 0">
+            四六级总分 710，听力、阅读各占 35%（249 分），写作+翻译共占 30%（212 分）。
+            阅读 86%、写译 92% 都在高位，<b>再往上的空间已经很小</b>；
+            听力 75% 是唯一明显偏低的项，也是 22 天里唯一值得大投入的项。
+          </p>
+        </div>
+
+        <div class="card">
+          <h3 style="margin-top:0">一句话诊断（已按你的补充修正）</h3>
+          <p style="font-size:14.5px;margin:6px 0">
+            六级听力实际能听懂约 <b>95%</b>，但记不住、不会边听边记 ——
+            所以问题<b>不是英语水平，是答题机制</b>：从"听懂"到"选对"中间那几步没练过。
+          </p>
+          <p style="font-size:14.5px;margin:10px 0 6px">22 天的资源分配：</p>
+          <div class="chips">
+            <span class="tag red">听力 50%</span>
+            <span class="tag amber">词汇 20%</span>
+            <span class="tag green">写译 15%</span>
+            <span class="tag green">阅读 15%</span>
+            <span class="tag" style="background:#eee;color:#999">口语 暂停</span>
+          </div>
+          <div class="note" style="margin-bottom:0">
+            六级 425 及格、500 体面、550 以上拿得出手。
+            以你 597 的四级底子和 95% 的听力理解率，<b>550–570 是合理目标</b>；
+            若把"笔记 + 预读选项"练成条件反射，<b>580 也不是奢望</b>。
+          </div>
+        </div>
+      </div>
+
+      <h2>分数是怎么"漏"掉的</h2>
+      <div class="grid g3">
+        <div class="card">
+          <span class="tag red">听力 75%</span>
+          <h3>听得懂 95%，但只兑现了 75%</h3>
+          <p class="small" style="color:var(--ink-2);margin:0">
+            中间那 20 个百分点不是"听不懂"，是：
+            ① 没预读选项，不知道要听什么（漏一部分）；
+            ② 记不住，做题时想不起来（漏一部分）；
+            ③ 听懂了但选项是同义替换，选错（漏一部分）。
+            <b>这三处都能在 22 天里明显改善。</b>
+          </p>
+        </div>
+        <div class="card">
+          <span class="tag amber">写译 92%</span>
+          <h3>优势项，只做"保温"</h3>
+          <p class="small" style="color:var(--ink-2);margin:0">
+            四级写译接近满分，语法和表达底子好。
+            六级写作更看论证层次，翻译更偏中国文化。
+            每周 2 篇作文 + 2 段翻译，把 3 套框架练到"提笔即用"即可，<b>不要重学</b>。
+          </p>
+        </div>
+        <div class="card">
+          <span class="tag green">阅读 86%</span>
+          <h3>已经很强，只保持手感</h3>
+          <p class="small" style="color:var(--ink-2);margin:0">
+            每周 1 次限时阅读就够。把省下来的时间给听力。
+            <b>阅读提 2 个点要花 10 小时，听力提 10 个点可能只要 5 小时</b>——这是这笔账的核心。
+          </p>
+        </div>
+      </div>
+
+      <h2>今天先做三件事</h2>
+      <div class="card">
+        <ol style="margin:0;padding-left:20px;font-size:14px;line-height:1.9">
+          <li>点开 <b>「22 天冲刺计划」</b>，把今天（Day 1）的 4 个任务做掉——今天只做一件事：<b>诊断</b>。</li>
+          <li>把一套真题听力的错题按「四类错因」归一次类（页面里有对照表），看看你主要漏在哪一环。</li>
+          <li>在 <b>「复盘」</b> 里写一句话：今天这套听力，我丢的分数主要属于哪一类。</li>
+        </ol>
+        <div class="btn-row" style="margin-top:14px">
+          <button class="btn" onclick="go('sprint')">开始 Day 1</button>
+          <button class="btn ghost" onclick="window.location.href='listening.html'">听力记忆训练场 →</button>
+        </div>
+        <p class="muted" style="margin:12px 0 0;font-size:12.5px">
+          听力训练的方法、速记模板、错因归类都在 <a href="listening.html">听力记忆训练场</a>，那是这个月的核心工具。
+        </p>
+      </div>
+
+      <h2>为什么这个月不碰口语</h2>
+      <div class="grid g2">
+        <div class="card">
+          <h3 style="margin-top:0">时间账：22 天只够打赢一场仗</h3>
+          <p class="small" style="color:var(--ink-2)">
+            口语是"每天 15 分钟 × 200 天"的慢变量，22 天投入不会在 12 月 12 日那张卷子上兑现一分。
+            而听力是"2–3 周就能看到分数变化"的快变量。
+            <b>同样的时间，投给听力的回报是投给口语的十倍以上。</b>
+          </p>
+        </div>
+        <div class="card">
+          <h3 style="margin-top:0">但口语的地基不用重来</h3>
+          <p class="small" style="color:var(--ink-2)">
+            你能听懂 95%，说明语音解码、语感、语料库都已经准备好了——
+            这是练口语最好的起点，比大多数人强。
+            <b>考完试第二天开始，它会是你的主线</b>，而且因为听力底子在，进度会比现在硬练快得多。
+          </p>
+        </div>
+      </div>
+      <div class="note green">
+        <b>所以这 22 天的规则很简单：</b>不打开口语页、不刷美剧当"学习"、不买口语课。
+        只做听力、词汇、写译、阅读四件事。考完试（12/12 晚上）再拆口语线。
+      </div>
+    </section>
+
+    <!-- ============ 冲刺计划 ============ -->
+    <section class="page" id="page-sprint">
+      <h1>22 天冲刺计划</h1>
+      <p class="lead">
+        每天 <b>90–120 分钟</b>，按「听力 50% / 词汇 20% / 写译 15% / 阅读 15%」分配。
+        <b>口语这 22 天完全不做</b>，一个任务都没有。任务可勾选，进度自动保存在本机。
+        做不到全部没关系，<b>每天至少完成「必做」的两项</b>，连续性比强度重要。
+      </p>
+
+      <div class="card" style="margin-bottom:8px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px">
+          <b style="font-size:14.5px">总体进度</b>
+          <span class="muted" id="sprintStat">0 / 0</span>
+        </div>
+        <div class="progress-wrap"><div class="progress"><i id="sprintBar" style="width:0%"></i></div><span class="pct" id="sprintPct">0%</span></div>
+        <div class="btn-row" style="margin-top:12px">
+          <button class="btn small ghost" onclick="expandAll(true)">展开全部</button>
+          <button class="btn small ghost" onclick="expandAll(false)">收起全部</button>
+          <button class="btn small ghost" onclick="resetPlan()">重置勾选</button>
+        </div>
+      </div>
+
+      <div id="planRoot"></div>
+
+      <div class="note blue" style="margin-top:24px">
+        <b>最后 3 天（12/10–12/11）：</b>不要再做新题、不要再背新词。
+        只做三件事：重听错题音频、过一遍写作翻译模板、把作息调到下午 3 点最清醒。
+        12 月 11 日晚上 11 点前睡。
+      </div>
+      <div class="note green" style="margin-bottom:0">
+        <b>这 22 天不做的事：</b>不打开口语页、不买口语课、不把看美剧算作"学习"。
+        口语线 12 月 13 日再开——那时候它才是主线。
+      </div>
+    </section>
+
+    <!-- ============ 单词测试 ============ -->
+    <section class="page" id="page-vocab">
+      <h1>单词测试</h1>
+      <p class="lead">
+        词库是 <b id="vTotal">380</b> 个六级高频词，按"考场上真的会出现"筛的，不是从 A 背到 Z。
+        <b>只要求"看到/听到能反应出意思"</b>，不要求拼写——六级不考拼写，考的是识别速度。
+      </p>
+
+      <div class="stat-grid">
+        <div class="stat"><div class="k">已掌握</div><div class="v" id="vKnown">0</div></div>
+        <div class="stat"><div class="k">模糊</div><div class="v" id="vFuzzy">0</div></div>
+        <div class="stat"><div class="k">未学</div><div class="v" id="vNew">0</div></div>
+        <div class="stat"><div class="k">正确率</div><div class="v" id="vAcc">—</div></div>
+      </div>
+
+      <div class="card" style="margin-bottom:14px">
+        <div class="vocab-top" style="margin-bottom:0">
+          <span class="muted" style="font-size:13px">模式</span>
+          <div class="seg" id="modeSeg">
+            <button class="on" data-mode="en2zh">英 → 中</button>
+            <button data-mode="listen">听音辨词</button>
+            <button data-mode="zh2en">中 → 英</button>
+          </div>
+          <span class="muted" style="font-size:13px;margin-left:6px">范围</span>
+          <div class="seg" id="scopeSeg">
+            <button class="on" data-scope="mix">智能混合</button>
+            <button data-scope="new">只考没背的</button>
+            <button data-scope="wrong">只考错题</button>
+          </div>
+        </div>
+        <div class="btn-row" style="margin-top:14px">
+          <button class="btn" onclick="startQuiz()">开始测试（20 词）</button>
+          <button class="btn ghost" onclick="startQuiz(10)">快速 10 词</button>
+          <button class="btn ghost" onclick="browseMode()">先看一遍词表</button>
+        </div>
+        <p class="muted small" style="margin:10px 0 0">
+          每天 20 个，22 天正好过完 380 个。答错的词会自动进错题本，第二天"智能混合"会优先抽它们。
+        </p>
+      </div>
+
+      <div id="vocabStage"></div>
+
+      <div class="note" style="margin-top:16px">
+        <b>为什么强调"听"：</b>你六级听力能听懂 95%，但听力题里仍有失分。
+        把单词的声音和意思绑在一起考，比只看拼写更接近考场。
+        「听音辨词」模式会先读单词、<b>不显示拼写</b>——逼你用耳朵认。
+      </div>
+    </section>
+
+    <!-- ============ 口语路线 ============ -->
+    <section class="page" id="page-road">
+      <h1>口语长跑路线（6–12 个月）</h1>
+      <div class="note" style="margin-top:0">
+        <b>这条线 12 月 13 日才启动。</b>现在打开它只当"提前知道路线"，不要执行、不要占时间。
+        12 月 12 日下午的考试，是这 22 天唯一的目标。
+      </div>
+      <p class="lead">
+        目标不是"说成母语者"，而是 <b>清晰、流畅、有逻辑、能撑住 3 分钟</b>。
+        口音只要不影响理解就可以保留——中国人说英语带点口音完全正常，native speaker 每天都在听各种口音。
+      </p>
+
+      <div class="card" style="margin-bottom:22px">
+        <h3 style="margin-top:0">先定一个可检验的目标</h3>
+        <table>
+          <tr><th>时间</th><th>能力标志</th><th>对应水平</th></tr>
+          <tr><td>1 个月后</td><td>能对着一个熟悉话题连续说 60 秒，中间不切换中文</td><td>敢开口</td></tr>
+          <tr><td>3 个月后</td><td>能就任一日常话题说 2 分钟，结构清楚（观点–理由–例子）</td><td>CEFR A2+ / B1</td></tr>
+          <tr><td>6 个月后</td><td>能就抽象话题（教育、科技、环境）说 3 分钟，并能回答追问</td><td>CEFR B1+</td></tr>
+          <tr><td>12 个月后</td><td>能进行 15 分钟无准备的自由对话，能表达立场、让步、反驳</td><td>CEFR B2</td></tr>
+        </table>
+      </div>
+
+      <div id="roadRoot"></div>
+
+      <h2>四个必须改掉的误区</h2>
+      <div class="grid g2">
+        <div class="card">
+          <h3 style="margin-top:0">✗ "我要先背够单词再开口"</h3>
+          <p class="small" style="color:var(--ink-2);margin:0">
+            开口需要的词只有 2000 左右。你四级 597，早就够了。
+            卡住你的不是词量，是<b>把词调出来的速度</b>——这个只能靠说练。
+          </p>
+        </div>
+        <div class="card">
+          <h3 style="margin-top:0">✗ "我要说得像美剧一样"</h3>
+          <p class="small" style="color:var(--ink-2);margin:0">
+            追求"像"会让你不敢说。先追求"对方不用猜"。
+            发音训练只做三件事：<b>元音到位、辅音结尾不发丢、句子有重音</b>。
+          </p>
+        </div>
+        <div class="card">
+          <h3 style="margin-top:0">✗ "看美剧学口语"</h3>
+          <p class="small" style="color:var(--ink-2);margin:0">
+            美剧是"欣赏"，不是"训练"。有效的输入必须<b>短、可重复、能跟读</b>。
+            3 分钟的一段材料跟读 20 遍，胜过看 3 集剧。
+          </p>
+        </div>
+        <div class="card">
+          <h3 style="margin-top:0">✗ "等有语言环境再练"</h3>
+          <p class="small" style="color:var(--ink-2);margin:0">
+            自言自语是被研究反复验证有效的办法。你需要的不是环境，是<b>每天固定的一段时间 + 一个必须出声的规则</b>。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 口语陪练室 ============ -->
+    <section class="page" id="page-speak">
+      <h1>口语陪练室</h1>
+      <div class="note" style="margin-top:0">
+        <b>暂停中，12 月 13 日再开。</b>这个月只做六级，口语一个任务都不排。
+        页面先留着，考完试当天晚上来开第一条。
+      </div>
+      <p class="lead">
+        流程固定：<b>抽题 → 15 秒准备 → 录音 1–2 分钟 → 回听 → 按四维自评 → 重录一遍</b>。
+        第二遍一定比第一遍好，这个"变好"的体感就是进步。录音不会上传，只留在你的浏览器里。
+      </p>
+
+      <div class="grid" style="grid-template-columns:1fr;gap:14px">
+        <div class="card">
+          <div class="btn-row" style="margin-bottom:14px">
+            <span class="muted" style="margin-right:4px">难度</span>
+            <button class="btn small ghost" data-lvbtn="all" data-level="all" onclick="filterLevel('all',this)">全部</button>
+            <button class="btn small ghost" data-lvbtn="1" data-level="1" onclick="filterLevel('1',this)">L1 热身</button>
+            <button class="btn small ghost" data-lvbtn="2" data-level="2" onclick="filterLevel('2',this)">L2 日常</button>
+            <button class="btn small ghost" data-lvbtn="3" data-level="3" onclick="filterLevel('3',this)">L3 观点</button>
+            <button class="btn small ghost" data-lvbtn="4" data-level="4" onclick="filterLevel('4',this)">L4 抽象</button>
+            <button class="btn small" style="margin-left:auto" onclick="randomPrompt()">🎲 随机一题</button>
+          </div>
+          <div class="grid g2" id="promptList"></div>
+        </div>
+      </div>
+
+      <div class="studio" style="margin-top:16px">
+        <div class="card">
+          <div class="muted" style="font-size:12px;letter-spacing:1.5px">CURRENT TOPIC</div>
+          <h3 id="curQ" style="margin:6px 0 2px;font-size:17px">还没有选题</h3>
+          <p class="small muted" id="curZh" style="margin:0">从上方卡片里挑一个，或点"随机一题"。</p>
+
+          <div class="timer-box">
+            <div class="phase" id="phase">READY</div>
+            <div class="clock" id="clock">00:00</div>
+            <div class="small muted" id="timerHint" style="margin-top:6px">准备 15 秒，然后说 90 秒</div>
+          </div>
+
+          <div class="btn-row" style="justify-content:center;margin-top:6px">
+            <button class="btn" id="btnStart" onclick="startRound()" disabled>开始（15s 准备 + 90s 作答）</button>
+            <button class="btn ghost" id="btnRecord" onclick="toggleRecord()" disabled>录音</button>
+            <button class="btn ghost" id="btnStop" onclick="stopRound()" disabled>结束</button>
+          </div>
+          <div class="small muted" style="text-align:center;margin-top:8px" id="recState">麦克风尚未授权</div>
+
+          <div class="audio-row"><audio id="player" controls class="hide"></audio></div>
+          <div class="transcript" id="transcript">语音转写会显示在这里（需 Chrome/Edge，且允许麦克风）。不转写也不影响练习。</div>
+        </div>
+
+        <div class="card">
+          <h3 style="margin-top:0">四维自评 <span class="muted" style="font-weight:400;font-size:12px">1 分=很差，5 分=很好</span></h3>
+          <div id="rubric"></div>
+          <div class="field" style="margin-top:12px">
+            <label>这次最大的一个问题 <span class="hint">一句话即可</span></label>
+            <textarea id="noteQ" placeholder="例：说 "important" 时卡住，换成了 "big deal"；第 40 秒开始重复同一句。"></textarea>
+          </div>
+          <div class="field">
+            <label>下一遍要改的一件事 <span class="hint">只改一件</span></label>
+            <input type="text" id="noteFix" placeholder="例：每段开头先给结论，再展开">
+          </div>
+          <button class="btn" style="width:100%" onclick="saveRound()">保存这次练习</button>
+          <div class="small muted" style="margin-top:10px;line-height:1.6">
+            提示：自评时不要凭感觉，<b>回听录音再打分</b>。
+            评分标准见「资料与用法」里的自评细则。
+          </div>
+        </div>
+      </div>
+
+      <h2>表达急救包：卡住时怎么说</h2>
+      <div class="grid g3">
+        <div class="card">
+          <h3 style="margin-top:0;font-size:14px">拖时间（争取思考）</h3>
+          <ul class="small" style="margin:0;padding-left:18px;color:var(--ink-2);line-height:1.9">
+            <li>That's an interesting question…</li>
+            <li>Let me think for a second.</li>
+            <li>Well, it depends on how you look at it.</li>
+            <li>I've never thought about it that way, but…</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3 style="margin-top:0;font-size:14px">换个说法（不会某个词）</h3>
+          <ul class="small" style="margin:0;padding-left:18px;color:var(--ink-2);line-height:1.9">
+            <li>It's a kind of… / a thing that…</li>
+            <li>What I mean is…</li>
+            <li>Sorry, I don't know the exact word, but…</li>
+            <li>It's similar to…, but not exactly.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3 style="margin-top:0;font-size:14px">撑长度（说不满时）</h3>
+          <ul class="small" style="margin:0;padding-left:18px;color:var(--ink-2);line-height:1.9">
+            <li>For example, when I was in high school…</li>
+            <li>That reminds me of…</li>
+            <li>On the other hand, some people argue…</li>
+            <li>So overall, I'd say…</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 跟读纠音 ============ -->
+    <section class="page" id="page-drill">
+      <h1>跟读纠音</h1>
+      <p class="lead">
+        点击句子旁的「听原声」用系统英文语音朗读，再点「跟读录音」录你自己。
+        <b>方法：</b>先听 2 遍，再跟读 3 遍，最后回听对比——只听三件事：元音是否到位、词尾辅音有没有吞、重音落在哪个词上。
+      </p>
+
+      <div class="note">
+        Windows 自带英文语音（Microsoft Zira）机器感较强，用它练<b>节奏和重音</b>足够，练细腻语调不够。
+        如果你有手机，<b>更推荐用手机词典 App（欧路、Cambridge Dictionary 网页版）逐句跟读</b>，那个发音更自然。
+      </div>
+
+      <div class="card" style="margin-bottom:16px">
+        <div class="btn-row">
+          <span class="muted" style="margin-right:4px">主题</span>
+          <button class="btn small ghost" data-gbtn="all" onclick="drillGroup('all',this)">全部</button>
+          <button class="btn small ghost" data-gbtn="sound" onclick="drillGroup('sound',this)">音素难点</button>
+          <button class="btn small ghost" data-gbtn="link" onclick="drillGroup('link',this)">连读弱读</button>
+          <button class="btn small ghost" data-gbtn="chunk" onclick="drillGroup('chunk',this)">意群节奏</button>
+        </div>
+      </div>
+      <div id="drillRoot"></div>
+    </section>
+
+    <!-- ============ 复盘与记录 ============ -->
+    <section class="page" id="page-log">
+      <h1>复盘与记录</h1>
+      <p class="lead">进步来自复盘，不来自练习量。每周日花 10 分钟写一次周复盘，比多刷一套题有用。</p>
+
+      <div class="grid g2">
+        <div class="card">
+          <h3 style="margin-top:0">口语练习记录</h3>
+          <div id="logStat" class="muted small" style="margin-bottom:10px">还没有记录</div>
+          <div id="logRoot" style="max-height:420px;overflow-y:auto"></div>
+          <div class="btn-row" style="margin-top:12px">
+            <button class="btn small ghost" onclick="exportAll()">导出全部数据（JSON）</button>
+            <button class="btn small ghost" onclick="document.getElementById('importFile').click()">导入</button>
+            <input type="file" id="importFile" accept=".json" class="hide" onchange="importAll(this)">
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 style="margin-top:0">本周周复盘</h3>
+          <div class="field">
+            <label>日期</label>
+            <input type="date" id="wkDate">
+          </div>
+          <div class="field">
+            <label>本周完成情况 <span class="hint">听力几篇/单词几轮/套题几套</span></label>
+            <textarea id="wkDone" placeholder="例：精听 5 篇，单词 6 轮，写作 2 篇，套题 1 套。"></textarea>
+          </div>
+          <div class="field">
+            <label>最大的一个卡点</label>
+            <textarea id="wkProblem" placeholder="例：听力讲座一走神就全崩；口语一紧张语速飙快。"></textarea>
+          </div>
+          <div class="field">
+            <label>下周只改一件事</label>
+            <input type="text" id="wkNext" placeholder="例：讲座只记关键词，不做全文听写">
+          </div>
+          <button class="btn" onclick="saveWeek()">保存周复盘</button>
+          <div id="weekRoot" style="margin-top:14px"></div>
+        </div>
+      </div>
+
+      <h2>错题本模板（听力）</h2>
+      <div class="card">
+        <p class="small" style="color:var(--ink-2);margin-top:0">
+          每道听力错题只记四样东西，30 秒记完。每周日把同类错误读一遍，比再刷 10 篇有效。
+        </p>
+        <table>
+          <tr><th>日期</th><th>题号</th><th>错因（只选一个）</th><th>关键句 / 生词</th></tr>
+          <tr><td>—</td><td>—</td><td>① 没听到 ② 听到了没反应 ③ 反应慢错过下一句 ④ 听懂了选错（同义替换没认出）</td><td>—</td></tr>
+        </table>
+        <div class="note green" style="margin-bottom:0">
+          错因 ① 要练"预读选项"；② 要补单词的声音形象；③ 要练"放弃上一句"的决断力；④ 要专门积累同义替换。
+          <b>四种错因，四种药，别混着吃。</b>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 资源 ============ -->
+    <section class="page" id="page-res">
+      <h1>资料、工具与自评标准</h1>
+      <p class="lead">不用都买。每个板块挑 1–2 个，用透，比收集一堆资料强。</p>
+
+      <h2>六级（22 天）</h2>
+      <table>
+        <tr><th style="width:90px">板块</th><th>推荐</th><th>怎么用</th></tr>
+        <tr><td>真题</td><td>近 5 年六级真题（星火/华研/黄皮书均可）</td><td>整套限时做 3 套；其余拆开做专项。真题是唯一不可替代的材料。</td></tr>
+        <tr><td>词汇</td><td>墨墨背单词 / 不背单词（选"六级核心"词书）</td><td>每天 25 新词 + 复习。只要求"看到认识"，不要求拼写。</td></tr>
+        <tr><td>听力精听</td><td>真题听力音频 + 每日英语听力 App</td><td>逐句听写→对照原文→标出听不出的地方→跟读 3 遍。</td></tr>
+        <tr><td>听力泛听</td><td>BBC 6 Minute English（约 6 分钟/集，带文本）</td><td>走路、吃饭时听，只求"大意跟得上"，不求逐词。</td></tr>
+        <tr><td>写作</td><td>六级范文 + 自建"功能句库"</td><td>背 3 套框架（现象+观点+建议 / 对比 / 因果），每周写 2 篇并对照范文改。</td></tr>
+        <tr><td>翻译</td><td>真题翻译 + 中国文化高频词表</td><td>每周 3 段，先自己译，再逐句对照，把"不会译的表达"单独记。</td></tr>
+      </table>
+
+      <h2>口语（长期）</h2>
+      <table>
+        <tr><th style="width:90px">用途</th><th>推荐</th><th>说明</th></tr>
+        <tr><td>发音</td><td>BBC Learning English《The Sounds of English》</td><td>44 个音素，每个 1–2 分钟，只挑中文里没有的音重点练：/θ/ /ð/ /v/ /r/ /l/ /æ/ /ɪ/。</td></tr>
+        <tr><td>跟读素材</td><td>BBC 6 Minute English</td><td>语速接近六级听力，长度合适，有全文稿，是"一份材料练两件事"的最优解。</td></tr>
+        <tr><td>查发音</td><td>Cambridge Dictionary（网页版可点发音）</td><td>查任何词都能听英音/美音，比自己猜靠谱。</td></tr>
+        <tr><td>真实语料</td><td>YouGlish</td><td>输入单词，看它在真实视频里怎么被念出来，练"声音形象"神器。</td></tr>
+        <tr><td>对话陪练</td><td>本页的「口语陪练室」+ 真人/AI 对话</td><td>先用它把"能说满 90 秒"练出来，再去买真实对话时间。</td></tr>
+        <tr><td>输出检验</td><td>每周录一条 2 分钟音频存档</td><td>不删旧录音。第 8 周回听第 1 周，你会明显听出差别。</td></tr>
+      </table>
+
+      <h2>口语自评细则（四维，1–5 分）</h2>
+      <div class="grid g2">
+        <div class="card">
+          <h3 style="margin-top:0">流畅度</h3>
+          <p class="small" style="color:var(--ink-2);margin:0">
+            5：基本无长停顿，能自然衔接<br>
+            4：偶有停顿，但能自己接上<br>
+            3：每句之间有明显停顿，靠"嗯"过渡<br>
+            2：频繁卡住，超过 3 秒的沉默多次<br>
+            1：说不完整句
+          </p>
+        </div>
+        <div class="card">
+          <h3 style="margin-top:0">词汇</h3>
+          <p class="small" style="color:var(--ink-2);margin:0">
+            5：能用具体、准确的词，有搭配意识<br>
+            4：偶有"绕过去"的表达<br>
+            3：大量使用 good / thing / very 这类空词<br>
+            2：反复卡在找词上<br>
+            1：词不够用，句子断裂
+          </p>
+        </div>
+        <div class="card">
+          <h3 style="margin-top:0">语法</h3>
+          <p class="small" style="color:var(--ink-2);margin:0">
+            5：时态、单复数、冠词基本无误，有复杂句<br>
+            4：小错但不影响理解<br>
+            3：有明显错（时态混用、he/she 不分）<br>
+            2：错误频繁，需要听者猜<br>
+            1：只能蹦词
+          </p>
+        </div>
+        <div class="card">
+          <h3 style="margin-top:0">发音</h3>
+          <p class="small" style="color:var(--ink-2);margin:0">
+            5：清晰，重音节奏自然<br>
+            4：个别音不准，但不影响理解<br>
+            3：能听懂，但需要费力<br>
+            2：多处影响理解<br>
+            1：听者基本听不懂
+          </p>
+        </div>
+      </div>
+      <div class="note green">
+        <b>打分的心态：</b>第一次大概率是 2/2/2/2，这是正常的起点，不是失败。
+        口语进步的形状是"平台期很长，然后突然跳一级"，所以别用单次分数判断自己，看四周平均。
+      </div>
+
+      <h2>这个页面怎么用</h2>
+      <details>
+        <summary>数据存在哪里？会不会丢？</summary>
+        <div class="body">
+          <p>全部存在你浏览器的 localStorage 里，不上传任何服务器。换浏览器、清理浏览器数据会丢。</p>
+          <p>所以每周日点一次「导出全部数据」存成 JSON 文件，换设备时用「导入」恢复。</p>
+          <p>录音只保存在当前页面内存里，<b>刷新就会消失</b>——想留存就右键音频另存，或直接用手机录音机。</p>
+        </div>
+      </details>
+      <details>
+        <summary>为什么录音按钮点了没反应？</summary>
+        <div class="body">
+          <p>浏览器要求麦克风必须在 <code>localhost</code> 或 https 下才能用。请通过 <code>python server.py</code> 启动后访问 <code>http://127.0.0.1:8765</code>，不要直接双击打开 HTML 文件。</p>
+          <p>语音转写只在 Chrome / Edge 里可用，且需要联网（走浏览器自带服务）。没有转写不影响录音和自评。</p>
+        </div>
+      </details>
+      <details>
+        <summary>每天到底要花多久？</summary>
+        <div class="body">
+          <p><b>考前 22 天：</b>90–120 分钟。<b>听力 50–60</b>（做题 30 + 笔记 15 + 精听 15）、<b>单词 20</b>（20 词测试 + 复习错词）、<b>写译 20–30</b>、<b>阅读 15</b>（每周 1–2 次）。<b>口语：0 分钟。</b></p>
+          <p><b>时间紧的日子（最低配 40 分钟）：</b>听力 1 篇 + 单词 20 个。这两项不能断，其余可以砍。</p>
+          <p><b>考完后（12/13 起）：</b>每天 30–40 分钟，口语 20 分钟变主角，听力/阅读各 10 分钟保温。</p>
+        </div>
+      </details>
+
+      <h2>装到手机上用</h2>
+      <details open>
+        <summary>怎么变成手机上的 App（不用电脑）</summary>
+        <div class="body">
+          <p><b>需要做一次：</b>把整个文件夹上传到 GitHub Pages，拿到一个 <code>https://</code> 开头的地址。</p>
+          <p><b>然后：</b>手机 Safari（iPhone）或 Chrome（Android）打开那个地址 →「分享 / 菜单」→「添加到主屏幕」。</p>
+          <p>装好后桌面会出现绿色 EN 图标，点开是全屏、无地址栏，<b>没网也能用</b>，录音权限正常。</p>
+          <p>详细步骤（含截图位置说明）见文件夹里的 <code>手机安装说明.md</code>，或问我要一步步的指引。</p>
+          <p class="muted" style="margin-bottom:0">
+            为什么不能直接双击 html？录音需要麦克风，浏览器只在 https 或 localhost 下才给权限。
+          </p>
+        </div>
+      </details>
+
+      <footer>
+        本页所有计划与评分标准为通用学习建议，不构成考试结果承诺。考试时间以准考证与中国教育考试网通知为准。
+      </footer>
+    </section>
+  </main>
+</div>
+
+<script src="vocab.js"></script>
+<script src="vocab-ui.js"></script>
+<script>
+/* =========================================================
+   数据层
+   ========================================================= */
+const LS = {
+  get(k, d){ try{ const v = localStorage.getItem('en.'+k); return v ? JSON.parse(v) : d; }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem('en.'+k, JSON.stringify(v)); }catch(e){} }
+};
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+
+function go(page){
+  $$('.page').forEach(p => p.classList.remove('on'));
+  const el = document.getElementById('page-'+page);
+  if(el) el.classList.add('on');
+  $$('#nav button').forEach(b => b.classList.toggle('on', b.dataset.page === page));
+  if(page === 'vocab' && typeof renderVStats === 'function') renderVStats();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+$$('#nav button').forEach(b => b.onclick = () => go(b.dataset.page));
+
+/* =========================================================
+   倒计时：2026-12-12 15:00 (UTC+8)
+   ========================================================= */
+const EXAM = new Date('2026-12-12T15:00:00+08:00');
+function tick(){
+  const now = new Date();
+  let ms = EXAM - now;
+  if(ms < 0) ms = 0;
+  const d = Math.floor(ms/86400000);
+  const h = Math.floor(ms%86400000/3600000);
+  const m = Math.floor(ms%3600000/60000);
+  $('#cdDays').textContent = d;
+  $('#cdHours').textContent = h;
+  $('#cdMins').textContent = m;
+  $('#footDays').textContent = d;
+}
+tick(); setInterval(tick, 30000);
+
+/* =========================================================
+   22 天冲刺计划
+   ========================================================= */
+const WEEKS = [
+  {
+    tag:'第 1 周', title:'先诊断，再把听力的"流程"跑通', range:'11/20 – 11/26',
+    goal:'这一周只练三件事：预读选项、边听边记点、一遍过复述。方法跑通了，后面两周才是重复。',
+    days:[
+      {
+        d:'Day 1', date:'11/20 五', theme:'诊断：你的分丢在哪一环',
+        tasks:[
+          {t:'做一套六级听力真题（只做听力，严格限时）', m:'35 min', must:true, tip:'按考试节奏，中间不暂停、不查词、不回放。'},
+          {t:'对答案，把错题按四类错因归类', m:'15 min', must:true, tip:'①没听到 ②听到了没反应 ③记住了但忘 ④听懂了选错。每道只归一类。'},
+          {t:'写下：我主要漏在哪一类（一句话）', m:'5 min', must:true, tip:'这句话决定你后面 21 天的主攻方向。'},
+          {t:'背 20 个六级高频词（只求认脸）', m:'15 min', must:false}
+        ]
+      },
+      {
+        d:'Day 2', date:'11/21 六', theme:'预读选项：把 30 秒用满',
+        tasks:[
+          {t:'听力 2 篇：先读选项、圈名词和数字，再听', m:'25 min', must:true, tip:'选项里的名词和数字就是你要等的"路标"。'},
+          {t:'听完立刻涂卡，不回头改', m:'5 min', must:true, tip:'六级每题只给 13 秒，回头就是放弃下一题。'},
+          {t:'精听昨天错得最多的那篇（只听没听到的地方）', m:'15 min', must:true, tip:'不要整篇听写，只处理那 5%。'},
+          {t:'背 20 词 + 复习', m:'15 min', must:true}
+        ]
+      },
+      {
+        d:'Day 3', date:'11/22 日', theme:'笔记：只记点，不记句',
+        tasks:[
+          {t:'学一遍速记系统（5 类信息 + 10 个符号）', m:'10 min', must:true, tip:'在「听力记忆训练场 → 速记系统」里，边看边抄一遍模板。'},
+          {t:'同一篇讲座听两遍：第一遍裸听，第二遍带笔记', m:'30 min', must:true, tip:'对比两次能复述多少，笔记必须让复述量变多，否则砍掉一半。'},
+          {t:'守 2 秒规则：落后 2 秒就放弃那个词', m:'—', must:true, tip:'这条规则单独值 20 分。'},
+          {t:'背 20 词 + 复习', m:'15 min', must:false}
+        ]
+      },
+      {
+        d:'Day 4', date:'11/23 一', theme:'精听：只处理那 5%',
+        tasks:[
+          {t:'讲座 1 篇：逐句听，标出"没听出来的地方"', m:'25 min', must:true, tip:'不需要整篇听写——你 95% 都懂，听写是浪费。'},
+          {t:'把这几个地方跟读 5 遍（练声音形象）', m:'10 min', must:true},
+          {t:'背 20 词 + 复习', m:'15 min', must:true},
+          {t:'阅读 1 篇，限时 10 分钟（保持手感）', m:'12 min', must:false}
+        ]
+      },
+      {
+        d:'Day 5', date:'11/24 二', theme:'讲座专项：开头三句 + 信号词',
+        tasks:[
+          {t:'讲座 2 篇：只记开头三句的主题 + 每段的转折', m:'30 min', must:true, tip:'主旨题几乎都出在开头；态度题几乎都出在 but / actually 后面。'},
+          {t:'对答案，看错的题是不是"该记的点没记"', m:'10 min', must:true},
+          {t:'背 20 词 + 复习', m:'15 min', must:true}
+        ]
+      },
+      {
+        d:'Day 6', date:'11/25 三', theme:'词汇：六级高频 + 听力场景词',
+        tasks:[
+          {t:'集中过 100 个六级高频词（只求认得）', m:'25 min', must:true, tip:'不要背拼写、不要造句。你要的是"听到能反应"。'},
+          {t:'把听力原文里不熟的词抄 20 个，听原声跟读', m:'15 min', must:true},
+          {t:'听力 1 篇（用新词最多的那篇）', m:'15 min', must:true},
+          {t:'写作：背 5 个功能句', m:'15 min', must:false}
+        ]
+      },
+      {
+        d:'Day 7', date:'11/26 四', theme:'半套限时 + 周复盘',
+        tasks:[
+          {t:'听力 + 阅读半套，严格计时', m:'60 min', must:true, tip:'用计时器，模拟考场节奏，中间不暂停。'},
+          {t:'对答案，统计各题型正确率', m:'15 min', must:true},
+          {t:'周复盘：这一周我最大的一个卡点', m:'10 min', must:true, tip:'写在「复盘」页，只写一条。'}
+        ]
+      }
+    ]
+  },
+  {
+    tag:'第 2 周', title:'真题专项：把方法变成条件反射', range:'11/27 – 12/03',
+    goal:'听力每天不少于 40 分钟；写译开始保温；阅读每周只碰一次。',
+    days:[
+      {
+        d:'Day 8', date:'11/27 五', theme:'听力：三种题型各 1 篇',
+        tasks:[
+          {t:'长对话 1 + 篇章 1 + 讲座 1，全部限时', m:'40 min', must:true, tip:'三种题型的节奏不一样，要分别练熟。'},
+          {t:'对答案，只分析错题（不重听全篇）', m:'15 min', must:true},
+          {t:'背 20 词 + 复习', m:'15 min', must:true}
+        ]
+      },
+      {
+        d:'Day 9', date:'11/28 六', theme:'写作：3 套框架',
+        tasks:[
+          {t:'整理并背 3 套作文框架（观点对比 / 现象解释 / 名言评论）', m:'25 min', must:true, tip:'六级写作 150–200 词，30 分钟，结构比辞藻重要。'},
+          {t:'用其中一套写 1 篇（限时 30 分钟）', m:'30 min', must:true},
+          {t:'听力 2 篇（保持每天不断）', m:'20 min', must:true}
+        ]
+      },
+      {
+        d:'Day 10', date:'11/29 日', theme:'翻译：中国文化高频',
+        tasks:[
+          {t:'翻译 2 段（限时各 15 分钟）', m:'30 min', must:true, tip:'六级翻译集中在传统文化、历史人物、社会发展三类。'},
+          {t:'把不会译的 10 个表达查成标准译法，抄下来', m:'15 min', must:true},
+          {t:'听力 1 篇讲座', m:'15 min', must:true}
+        ]
+      },
+      {
+        d:'Day 11', date:'11/30 一', theme:'听力：错题重听',
+        tasks:[
+          {t:'重听上周所有错题的音频，逐题找"答案句"', m:'30 min', must:true, tip:'找到答案句的那一刻，你就知道下次该等什么。'},
+          {t:'把这些答案句抄成一张"触发词表"', m:'15 min', must:true},
+          {t:'背 20 词 + 复习', m:'15 min', must:true}
+        ]
+      },
+      {
+        d:'Day 12', date:'12/01 二', theme:'整套听力（第一次全真）',
+        tasks:[
+          {t:'完整听力 30 分钟，不暂停', m:'30 min', must:true},
+          {t:'对答案 + 算分（听力目标：35+/50）', m:'15 min', must:true},
+          {t:'分析：丢的分里"没听到"占几道、"记住但忘"占几道', m:'10 min', must:true},
+          {t:'背 20 词', m:'15 min', must:false}
+        ]
+      },
+      {
+        d:'Day 13', date:'12/02 三', theme:'阅读保平',
+        tasks:[
+          {t:'仔细阅读 2 篇，限时 20 分钟', m:'25 min', must:true, tip:'先读题干不读选项，回原文定位，同义替换就是答案。'},
+          {t:'长篇阅读匹配 1 篇，限时 15 分钟', m:'20 min', must:true},
+          {t:'听力 1 篇', m:'15 min', must:true}
+        ]
+      },
+      {
+        d:'Day 14', date:'12/03 四', theme:'半套 + 周复盘',
+        tasks:[
+          {t:'听力 + 写译半套，严格计时', m:'60 min', must:true},
+          {t:'周复盘：方法有没有变成习惯？', m:'10 min', must:true},
+          {t:'背 20 词 + 复习', m:'15 min', must:false}
+        ]
+      }
+    ]
+  },
+  {
+    tag:'第 3 周', title:'整卷实战：把节奏练成肌肉记忆', range:'12/04 – 12/09',
+    goal:'从"分项练"切到"整卷节奏"。这一周最重要的不是多做题，是把时间分配和心态固定下来。',
+    days:[
+      {
+        d:'Day 15', date:'12/04 五', theme:'完整套题 1',
+        tasks:[
+          {t:'完整套题（130 分钟，按 15:00 开始）', m:'130 min', must:true, tip:'周末做最好；工作日可拆两段，但听力必须连续。'},
+          {t:'对答案 + 算分', m:'15 min', must:true},
+          {t:'把最差的 5 道听力题写进错题本', m:'15 min', must:true}
+        ]
+      },
+      {
+        d:'Day 16', date:'12/05 六', theme:'套题 1 复盘',
+        tasks:[
+          {t:'重听套题 1 的听力，逐题找答案句', m:'35 min', must:true},
+          {t:'写作 1 篇（用套题 1 的题目重写）', m:'30 min', must:true},
+          {t:'背 20 词 + 复习', m:'15 min', must:false}
+        ]
+      },
+      {
+        d:'Day 17', date:'12/06 日', theme:'完整套题 2',
+        tasks:[
+          {t:'完整套题（130 分钟）', m:'130 min', must:true},
+          {t:'对答案，对比套题 1 的进步与退步', m:'20 min', must:true},
+          {t:'写下：两套里重复出现的错误是哪一类', m:'10 min', must:true}
+        ]
+      },
+      {
+        d:'Day 18', date:'12/07 一', theme:'重复错误专项',
+        tasks:[
+          {t:'只练"重复出现的那一类"错题（10 道）', m:'35 min', must:true, tip:'两套都错同一类，说明那是真问题，不是运气。'},
+          {t:'翻译 1 段（限时 15 分钟）', m:'20 min', must:true},
+          {t:'背 20 词 + 复习', m:'15 min', must:false}
+        ]
+      },
+      {
+        d:'Day 19', date:'12/08 二', theme:'听力：最后的高强度',
+        tasks:[
+          {t:'讲座 3 篇连做（一次听完，不暂停）', m:'40 min', must:true},
+          {t:'对答案，只看"该记没记"的题', m:'15 min', must:true},
+          {t:'作文框架默写一遍', m:'15 min', must:true}
+        ]
+      },
+      {
+        d:'Day 20', date:'12/09 三', theme:'完整套题 3（最后一套新题）',
+        tasks:[
+          {t:'完整套题（130 分钟）', m:'130 min', must:true, tip:'这是最后一次做新题，之后只复盘。'},
+          {t:'对答案，只看错题，不做新总结', m:'20 min', must:true},
+          {t:'23:00 前睡', m:'—', must:true}
+        ]
+      }
+    ]
+  },
+  {
+    tag:'最后 3 天', title:'只做减法', range:'12/10 – 12/12',
+    goal:'不刷新题、不背新词。只做三件事：回听错题、过模板、调作息。',
+    days:[
+      {
+        d:'Day 21', date:'12/10 四', theme:'错题回炉',
+        tasks:[
+          {t:'重听三套题的听力错题（只听过错的那几段）', m:'40 min', must:true},
+          {t:'过一遍 3 套作文框架（只看不写）', m:'15 min', must:true},
+          {t:'复习高频错词 100 个', m:'15 min', must:true}
+        ]
+      },
+      {
+        d:'Day 22', date:'12/11 五', theme:'考前一日',
+        tasks:[
+          {t:'只看错题本和模板，不做任何新题', m:'30 min', must:true},
+          {t:'准备证件、准考证、文具、耳机（含电池）', m:'10 min', must:true},
+          {t:'确认考场路线，设好闹钟', m:'10 min', must:true},
+          {t:'23:00 前睡，不熬夜', m:'—', must:true}
+        ]
+      },
+      {
+        d:'EXAM', date:'12/12 六', theme:'考试日',
+        tasks:[
+          {t:'上午：轻读作文框架，不做题', m:'20 min', must:true},
+          {t:'14:00 到场，14:30 前坐定，平静呼吸', m:'—', must:true},
+          {t:'15:00 开考。作文先写；听力前 30 秒扫选项；每题 13 秒内涂卡。', m:'—', must:true},
+          {t:'考完不对答案，直接去吃顿好的。口语线明天再开。', m:'—', must:true}
+        ]
+      }
+    ]
+  }
+];
+
+const CHECK_KEY = 'plan.checks';
+let checks = LS.get(CHECK_KEY, {});
+
+function buildPlan(){
+  const root = $('#planRoot');
+  if(!root) return;
+  let html = '';
+  WEEKS.forEach((w, wi) => {
+    html += `<div class="week-head"><span class="w">${w.tag}</span><h3>${w.title}</h3><span class="range">${w.range}</span></div>`;
+    html += `<p class="small muted" style="margin:-4px 0 10px">${w.goal}</p>`;
+    w.days.forEach((day, di) => {
+      const id = `${wi}-${di}`;
+      const open = (wi===0 && di===0);
+      html += `<div class="day ${open?'open':''}" id="day-${id}">`;
+      html += `<div class="day-h" onclick="toggleDay('${id}')">
+                 <span class="d">${day.d}</span>
+                 <span class="t">${day.date} · ${day.theme}</span>
+                 <span class="chev">▶</span>
+               </div><div class="day-b">`;
+      day.tasks.forEach((t, ti) => {
+        const cid = `${id}-${ti}`;
+        const checked = checks[cid] ? 'checked' : '';
+        html += `<div class="task">
+                   <input type="checkbox" id="chk-${cid}" ${checked} onchange="onCheck('${cid}', this)">
+                   <label for="chk-${cid}">${t.t}${t.must?' <span class="tag red" style="font-size:11px">必做</span>':''}
+                     ${t.tip?`<span class="tip">${t.tip}</span>`:''}
+                   </label>
+                   <span class="mins">${t.m}</span>
+                 </div>`;
+      });
+      html += `</div></div>`;
+    });
+  });
+  root.innerHTML = html;
+  updateSprintStat();
+}
+
+function toggleDay(id){
+  const el = document.getElementById('day-'+id);
+  if(el) el.classList.toggle('open');
+}
+function onCheck(cid, el){
+  if(el.checked) checks[cid] = 1; else delete checks[cid];
+  LS.set(CHECK_KEY, checks);
+  updateSprintStat();
+}
+function totalTasks(){
+  let n = 0;
+  WEEKS.forEach((w,wi) => w.days.forEach((d,di) => n += d.tasks.length));
+  return n;
+}
+function updateSprintStat(){
+  const total = totalTasks();
+  const done = Object.keys(checks).length;
+  const pct = total ? Math.round(done/total*100) : 0;
+  const st = $('#sprintStat'), bar = $('#sprintBar'), pc = $('#sprintPct');
+  if(st) st.textContent = `${done} / ${total} 项`;
+  if(bar) bar.style.width = pct + '%';
+  if(pc) pc.textContent = pct + '%';
+}
+function expandAll(open){
+  $$('.day').forEach(d => d.classList.toggle('open', open));
+}
+function resetPlan(){
+  if(!confirm('确定清空所有勾选？此操作不可恢复。')) return;
+  checks = {}; LS.set(CHECK_KEY, checks); localStorage.removeItem('en.plan.checks');
+  buildPlan();
+}
+
+/* =========================================================
+   口语长跑路线
+   ========================================================= */
+const ROAD = [
+  {
+    when:'第 1 阶段 · 12/13 – 1/10（考后 4 周）', title:'发音地基 + 敢开口',
+    now:true,
+    goal:'目标：连续说满 60 秒不切中文；把 6 个中文里没有的音练顺。',
+    daily:'每天 20 分钟：跟读 10 分钟 + 自说自话 10 分钟',
+    bullets:[
+      '音素：只练 /θ/ /ð/ /v/ /r/ /l/ /æ/ /ɪ/，每个音找 10 个词，对着镜子看口型。',
+      '跟读：每天 1 段 6 Minute English 的 30 秒片段，听 2 遍 → 跟读 5 遍 → 录音对比。',
+      '自言自语：用英语描述你正在做的事（"I\'m boiling some water…"），不需要正确，只需要不停。',
+      '第一条铁律：不评价、不纠正、不中断。先让嘴巴动起来。'
+    ],
+    check:'能连续说 60 秒，即使有错也不切中文'
+  },
+  {
+    when:'第 2 阶段 · 1/11 – 2/28（约 7 周）', title:'能说满 2 分钟',
+    goal:'目标：任一日常话题说 2 分钟，有"观点–理由–例子"的结构。',
+    daily:'每天 25 分钟：复述 10 分钟 + 话题练习 10 分钟 + 复盘 5 分钟',
+    bullets:[
+      '复述（retelling）：读一段 200 词的材料，合上，用自己的话说 1 分钟。',
+      '3-2-1 法：同一话题说 3 分钟 → 压缩到 2 分钟 → 再压到 1 分钟，只留核心。',
+      '每周 3 个话题，从「口语陪练室」的 L1/L2 里抽，每个录 2 遍。',
+      '开始记"卡点本"：每次卡住的词或句型，当天查好，第二天必须用一次。'
+    ],
+    check:'能就"我的专业""一次旅行""一部电影"各说 2 分钟'
+  },
+  {
+    when:'第 3 阶段 · 3/1 – 5/31（约 13 周）', title:'能讨论、能追问',
+    goal:'目标：抽象话题说 3 分钟；能听懂追问并回应；开始真实对话。',
+    daily:'每天 30–40 分钟：话题 15 分钟 + 真实对话 15 分钟 + 复盘 5 分钟',
+    bullets:[
+      '每周 1 次真实对话：外教、语言交换（Tandem/HelloTalk）、或 AI 语音对话。',
+      '准备"万能论据库"：教育、科技、环境、健康、就业，每个话题 3 个可复用论据。',
+      '练"让步–反驳"：Admittedly…, but… / While it\'s true that…, I\'d argue…',
+      '精听升级：TED-Ed（5 分钟）、BBC Global News Podcast，练"听完用三句话总结"。'
+    ],
+    check:'能就"AI 会不会取代老师"说 3 分钟，并回应 2 个追问'
+  },
+  {
+    when:'第 4 阶段 · 6/1 – 12/31（约 7 个月）', title:'流利度与观点深度',
+    goal:'目标：15 分钟无准备自由对话；能表达立场、举例、让步、总结。',
+    daily:'每天 30 分钟：输入 10 分钟 + 输出 20 分钟',
+    bullets:[
+      '固定一个"英语时段"：每天 30 分钟只说英语，哪怕是自言自语。',
+      '影子跟读（shadowing）：边听边几乎同步复述，练语流和节奏，每天 10 分钟。',
+      '每周一次 3 分钟即兴演讲（随机抽题，30 秒准备），录下来，只挑一个毛病改。',
+      '如果有条件：考雅思/托福口语，用考试标准倒逼输出质量；或参加英语演讲比赛。'
+    ],
+    check:'能连续对话 15 分钟，不需要对方放慢语速'
+  }
+];
+
+function buildRoad(){
+  const root = $('#roadRoot');
+  if(!root) return;
+  let html = '';
+  ROAD.forEach(s => {
+    html += `<div class="stage ${s.now?'now':''}">
+      <div class="sh"><b>${s.title}</b><span class="when">${s.when}</span></div>
+      <p><b>${s.goal}</b></p>
+      <p class="muted" style="font-size:13px">${s.daily}</p>
+      <ul class="small" style="color:var(--ink-2);margin:6px 0;padding-left:18px;line-height:1.85">
+        ${s.bullets.map(b=>`<li>${b}</li>`).join('')}
+      </ul>
+      <div class="chips"><span class="tag green">达标标志：${s.check}</span></div>
+    </div>`;
+  });
+  root.innerHTML = html;
+}
+
+/* =========================================================
+   口语题库
+   ========================================================= */
+const PROMPTS = [
+  {lv:1, tag:'热身', q:'Introduce yourself in 60 seconds.', zh:'用 60 秒介绍你自己。',
+   frame:'名字 → 专业/年级 → 一个爱好 → 为什么在学英语 → 一句期待'},
+  {lv:1, tag:'热身', q:'Describe your typical day.', zh:'描述你典型的一天。',
+   frame:'早上 → 上课 → 下午 → 晚上 → 一句感受'},
+  {lv:1, tag:'热身', q:'Talk about a person who influenced you.', zh:'讲一个影响过你的人。',
+   frame:'是谁 → 什么关系 → 他做过什么 → 对你的影响 → 现在'},
+  {lv:1, tag:'热身', q:'What do you do when you feel stressed?', zh:'压力大时你会做什么？',
+   frame:'承认压力 → 具体做法 → 为什么有效 → 有没有副作用'},
+  {lv:2, tag:'日常', q:'Describe a trip you still remember.', zh:'描述一次你仍记得的旅行。',
+   frame:'时间地点 → 和谁 → 最难忘的一幕 → 学到了什么'},
+  {lv:2, tag:'日常', q:'Should college students do part-time jobs?', zh:'大学生该不该做兼职？',
+   frame:'表态 → 理由1（钱/经验）→ 理由2（时间成本）→ 折中建议'},
+  {lv:2, tag:'日常', q:'Is it better to live on campus or off campus?', zh:'住校好还是校外租房好？',
+   frame:'表态 → 便利性 → 成本 → 社交 → 结论'},
+  {lv:2, tag:'日常', q:'How do you usually learn something new?', zh:'你通常怎么学新东西？',
+   frame:'举例 → 步骤 → 效果 → 局限'},
+  {lv:3, tag:'观点', q:'Does social media bring people closer or further apart?', zh:'社交媒体让人更近还是更远？',
+   frame:'两边都说 → 我的判断 → 一个具体例子 → 条件性结论'},
+  {lv:3, tag:'观点', q:'Should everyone learn a second foreign language?', zh:'每个人都该学第二外语吗？',
+   frame:'价值 → 现实成本 → 谁最该学 → 结论'},
+  {lv:3, tag:'观点', q:'Is it fair to judge students only by grades?', zh:'只用成绩评价学生公平吗？',
+   frame:'承认成绩的作用 → 它测不到什么 → 更好的做法 → 现实约束'},
+  {lv:3, tag:'观点', q:'What is the biggest challenge for your generation?', zh:'你们这代人最大的挑战是什么？',
+   frame:'挑一个 → 为什么是它 → 具体表现 → 可能的出路'},
+  {lv:4, tag:'抽象', q:'Will AI replace teachers? Why or why not?', zh:'AI 会取代老师吗？',
+   frame:'区分"教学"与"教育" → AI 能做什么 → 人不可替代的部分 → 结论'},
+  {lv:4, tag:'抽象', q:'What is the purpose of a university education?', zh:'大学教育的目的是什么？',
+   frame:'三种常见答案 → 我的选择 → 理由 → 对现状的批评'},
+  {lv:4, tag:'抽象', q:'Is technological progress always a good thing?', zh:'技术进步总是好事吗？',
+   frame:'反例 → 谁受益谁受损 → 判断标准 → 结论'},
+  {lv:4, tag:'抽象', q:'Can happiness be measured?', zh:'幸福可以被测量吗？',
+   frame:'定义幸福 → 测量的困难 → 部分可测 → 结论'},
+  {lv:3, tag:'观点', q:'Should we ban single-use plastics completely?', zh:'该不该全面禁用一次性塑料？',
+   frame:'问题严重性 → 禁令的好处 → 现实阻力 → 替代方案'},
+  {lv:2, tag:'日常', q:'Describe a skill you want to learn.', zh:'描述一项你想学的技能。',
+   frame:'是什么 → 为什么想学 → 打算怎么学 → 预计多久'}
+];
+
+let curPrompt = null;
+let curLevel = 'all';
+let practiceData = LS.get('practice', []);
+
+function buildPrompts(){
+  const root = $('#promptList');
+  if(!root) return;
+  const list = PROMPTS.filter(p => curLevel === 'all' || String(p.lv) === curLevel);
+  root.innerHTML = list.map((p, i) => {
+    const idx = PROMPTS.indexOf(p);
+    return `<div class="prompt-card" data-idx="${idx}" onclick="pickPrompt(${idx})">
+      <div class="q">${p.q}</div>
+      <div class="zh">${p.zh}</div>
+      <div class="meta">
+        <span class="tag ${p.lv===1?'green':p.lv===2?'blue':p.lv===3?'amber':'red'}">L${p.lv} ${p.tag}</span>
+        <span class="tag">${p.frame.length>22?'有框架':'有框架'}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+function filterLevel(lv, btn){
+  curLevel = lv;
+  $$('[data-lvbtn]').forEach(b => b.style.background = '');
+  if(btn) btn.style.background = 'var(--green-soft)';
+  buildPrompts();
+}
+function pickPrompt(idx){
+  curPrompt = PROMPTS[idx];
+  $('#curQ').textContent = curPrompt.q;
+  $('#curZh').textContent = curPrompt.zh + ' ｜ 结构提示：' + curPrompt.frame;
+  $('#btnStart').disabled = false;
+  $('#btnRecord').disabled = false;
+  $$('.prompt-card').forEach(c => c.classList.toggle('on', Number(c.dataset.idx) === idx));
+  resetTimer();
+  $('#transcript').textContent = '语音转写会显示在这里（需 Chrome/Edge，且允许麦克风）。不转写也不影响练习。';
+  $('#phase').textContent = 'READY';
+}
+function randomPrompt(){
+  const p = PROMPTS[Math.floor(Math.random()*PROMPTS.length)];
+  curLevel = 'all';
+  buildPrompts();
+  pickPrompt(PROMPTS.indexOf(p));
+  go('speak');
+}
+
+/* ---------- 计时器 ---------- */
+let timerId = null, phase = 'idle', remain = 0;
+function fmt(s){ const m = Math.floor(s/60), ss = s%60; return String(m).padStart(2,'0')+':'+String(ss).padStart(2,'0'); }
+function setClock(sec, warn){
+  const c = $('#clock');
+  c.textContent = fmt(sec);
+  c.classList.toggle('warn', !!warn);
+}
+function resetTimer(){
+  clearInterval(timerId); timerId = null; phase = 'idle';
+  setClock(0); $('#phase').textContent = 'READY';
+  $('#timerHint').textContent = '准备 15 秒，然后说 90 秒';
+  $('#btnStop').disabled = true;
+}
+function startRound(){
+  if(!curPrompt) return;
+  clearInterval(timerId);
+  phase = 'prep'; remain = 15;
+  $('#timerHint').textContent = '准备阶段：想好开头三句';
+  $('#phase').textContent = 'PREPARE';
+  setClock(remain);
+  $('#btnStop').disabled = false;
+  timerId = setInterval(() => {
+    remain--;
+    setClock(remain, remain <= 5);
+    if(remain <= 0){
+      if(phase === 'prep'){
+        phase = 'speak'; remain = 90;
+        $('#phase').textContent = 'SPEAK';
+        $('#timerHint').textContent = '开始说。卡住就用"There\'s something I want to say about…"接下去。';
+        setClock(remain);
+      } else {
+        clearInterval(timerId); timerId = null;
+        phase = 'done';
+        $('#phase').textContent = 'DONE';
+        $('#timerHint').textContent = '时间到。回听录音，然后自评。';
+        setClock(0);
+        if(recorder && recorder.state === 'recording') stopRecording();
+      }
+    }
+  }, 1000);
+}
+function stopRound(){
+  clearInterval(timerId); timerId = null;
+  phase = 'done';
+  $('#phase').textContent = 'DONE';
+  setClock(0);
+  $('#timerHint').textContent = '已结束。回听录音，然后自评。';
+  if(recorder && recorder.state === 'recording') stopRecording();
+}
+
+/* ---------- 录音 ---------- */
+let recorder = null, chunks = [], stream = null, recog = null, finalText = '';
+async function toggleRecord(){
+  if(recorder && recorder.state === 'recording'){ stopRecording(); return; }
+  await startRecording();
+}
+async function startRecording(){
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+    $('#recState').textContent = '这个浏览器不支持录音，请用 Chrome / Edge，并通过 http://127.0.0.1 访问。';
+    return;
+  }
+  try{
+    stream = await navigator.mediaDevices.getUserMedia({audio:true});
+  }catch(e){
+    $('#recState').textContent = '麦克风被拒绝。点地址栏的图标允许麦克风后重试。';
+    return;
+  }
+  chunks = [];
+  recorder = new MediaRecorder(stream);
+  recorder.ondataavailable = e => { if(e.data.size) chunks.push(e.data); };
+  recorder.onstop = () => {
+    const blob = new Blob(chunks, {type: recorder.mimeType || 'audio/webm'});
+    const url = URL.createObjectURL(blob);
+    const p = $('#player');
+    p.src = url; p.classList.remove('hide');
+    $('#recState').innerHTML = '<span class="rec-dot"></span>录音结束，可回听（刷新前有效）';
+    if(stream) stream.getTracks().forEach(t => t.stop());
+  };
+  recorder.start();
+  $('#recState').innerHTML = '<span class="rec-dot"></span>正在录音…（再点一次「录音」可停止）';
+  $('#btnRecord').textContent = '停止录音';
+  startRecog();
+}
+function stopRecording(){
+  try{ if(recorder && recorder.state === 'recording') recorder.stop(); }catch(e){}
+  if(recog){ try{ recog.stop(); }catch(e){} }
+  $('#btnRecord').textContent = '重新录音';
+}
+function startRecog(){
+  finalText = '';
+  $('#transcript').textContent = '正在听…';
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SR){ $('#transcript').textContent = '这个浏览器不支持语音转写（用 Chrome / Edge 可开启）。不影响录音与自评。'; return; }
+  try{
+    recog = new SR();
+    recog.lang = 'en-US';
+    recog.continuous = true;
+    recog.interimResults = true;
+    recog.onresult = e => {
+      let interim = '';
+      for(let i = e.resultIndex; i < e.results.length; i++){
+        const t = e.results[i][0].transcript;
+        if(e.results[i].isFinal) finalText += t + ' ';
+        else interim += t;
+      }
+      $('#transcript').innerHTML = `<span style="color:var(--ink)">${finalText}</span><span style="color:var(--ink-3)">${interim}</span>`;
+    };
+    recog.onerror = e => { $('#transcript').textContent = '转写中断：' + e.error + '（录音仍在继续）'; };
+    recog.start();
+  }catch(e){ $('#transcript').textContent = '转写启动失败，但不影响录音。'; }
+}
+
+/* ---------- 自评 ---------- */
+const RUBRIC = [
+  {k:'fluency', n:'流畅度', d:'停顿、语速、能否自己接上'},
+  {k:'vocab', n:'词汇', d:'是否准确、具体，有没有绕过去'},
+  {k:'grammar', n:'语法', d:'时态、单复数、句子完整度'},
+  {k:'pron', n:'发音', d:'清晰度、重音、词尾辅音'}
+];
+let scores = {fluency:0, vocab:0, grammar:0, pron:0};
+function buildRubric(){
+  const root = $('#rubric');
+  if(!root) return;
+  root.innerHTML = RUBRIC.map(r => `<div class="rubric-row">
+    <span class="rn">${r.n}<span class="muted" style="display:block;font-size:11.5px">${r.d}</span></span>
+    <span class="stars" id="stars-${r.k}">${[1,2,3,4,5].map(i=>`<button onclick="setScore('${r.k}',${i})">★</button>`).join('')}</span>
+  </div>`).join('');
+}
+function setScore(k, v){
+  scores[k] = v;
+  $$(`#stars-${k} button`).forEach((b,i) => b.classList.toggle('lit', i < v));
+}
+function saveRound(){
+  if(!curPrompt){ alert('先选一个话题'); return; }
+  const total = RUBRIC.reduce((s,r) => s + (scores[r.k]||0), 0);
+  const d = new Date();
+  const rec = {
+    id: Date.now(),
+    date: d.toLocaleDateString('zh-CN'),
+    time: d.toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'}),
+    lv: curPrompt.lv,
+    q: curPrompt.q,
+    scores: {...scores},
+    total,
+    note: $('#noteQ').value.trim(),
+    fix: $('#noteFix').value.trim(),
+    transcript: finalText.trim()
+  };
+  practiceData.unshift(rec);
+  LS.set('practice', practiceData);
+  $('#noteQ').value = ''; $('#noteFix').value = '';
+  RUBRIC.forEach(r => setScore(r.k, 0));
+  renderLog();
+  alert('已保存。' + (total === 0 ? '\n（下次记得打分，否则看不出进步。）' : ''));
+}
+function renderLog(){
+  const root = $('#logRoot');
+  const stat = $('#logStat');
+  if(!root) return;
+  if(!practiceData.length){
+    root.innerHTML = '<p class="muted small">还没有记录。去「口语陪练室」录第一条吧。</p>';
+    if(stat) stat.textContent = '还没有记录';
+    return;
+  }
+  if(stat){
+    const avg = (practiceData.reduce((s,r)=>s+(r.total||0),0)/practiceData.length).toFixed(1);
+    stat.textContent = `共 ${practiceData.length} 次 · 四维总分平均 ${avg} / 20`;
+  }
+  root.innerHTML = practiceData.slice(0,40).map(r => `
+    <div class="log-item">
+      <div class="top">
+        <b>L${r.lv}</b>
+        <span style="flex:1">${r.q}</span>
+        <span class="date">${r.date} ${r.time}</span>
+        <span class="tag ${r.total>=16?'green':r.total>=11?'amber':'red'}">${r.total}/20</span>
+      </div>
+      <div class="muted" style="margin-top:4px;font-size:12.5px">
+        流 ${r.scores.fluency} · 词 ${r.scores.vocab} · 法 ${r.scores.grammar} · 音 ${r.scores.pron}
+      </div>
+      ${r.note?`<div style="margin-top:5px">问题：${esc(r.note)}</div>`:''}
+      ${r.fix?`<div class="muted" style="font-size:12.5px">下次改：${esc(r.fix)}</div>`:''}
+      ${r.transcript?`<div class="muted" style="font-size:12px;margin-top:4px">转写：${esc(r.transcript.slice(0,160))}${r.transcript.length>160?'…':''}</div>`:''}
+    </div>`).join('');
+}
+function esc(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+/* ---------- 周复盘 ---------- */
+function saveWeek(){
+  const w = {
+    date: $('#wkDate').value || new Date().toISOString().slice(0,10),
+    done: $('#wkDone').value.trim(),
+    problem: $('#wkProblem').value.trim(),
+    next: $('#wkNext').value.trim()
+  };
+  if(!w.done && !w.problem && !w.next){ alert('至少写一条再保存。'); return; }
+  const arr = LS.get('weeks', []);
+  arr.unshift(w);
+  LS.set('weeks', arr);
+  $('#wkDone').value=''; $('#wkProblem').value=''; $('#wkNext').value='';
+  renderWeeks();
+  alert('周复盘已保存。');
+}
+function renderWeeks(){
+  const root = $('#weekRoot');
+  if(!root) return;
+  const arr = LS.get('weeks', []);
+  if(!arr.length){ root.innerHTML = '<p class="muted small">还没有周复盘。</p>'; return; }
+  root.innerHTML = arr.slice(0,8).map(w => `<div class="log-item">
+    <div class="top"><b>${w.date}</b></div>
+    ${w.done?`<div style="margin-top:4px">完成：${esc(w.done)}</div>`:''}
+    ${w.problem?`<div style="margin-top:3px">卡点：${esc(w.problem)}</div>`:''}
+    ${w.next?`<div class="muted" style="font-size:12.5px">下周只改：${esc(w.next)}</div>`:''}
+  </div>`).join('');
+}
+
+/* ---------- 导入导出 ---------- */
+function exportAll(){
+  const data = {
+    exportedAt: new Date().toISOString(),
+    plan: LS.get('plan.checks', {}),
+    practice: LS.get('practice', []),
+    weeks: LS.get('weeks', []),
+    drills: LS.get('drills', [])
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'english-practice-' + new Date().toISOString().slice(0,10) + '.json';
+  a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 2000);
+}
+function importAll(input){
+  const f = input.files[0]; if(!f) return;
+  const r = new FileReader();
+  r.onload = () => {
+    try{
+      const d = JSON.parse(r.result);
+      if(d.plan) LS.set('plan.checks', d.plan);
+      if(d.practice) LS.set('practice', d.practice);
+      if(d.weeks) LS.set('weeks', d.weeks);
+      if(d.drills) LS.set('drills', d.drills);
+      checks = LS.get('plan.checks', {});
+      practiceData = LS.get('practice', []);
+      buildPlan(); renderLog(); renderWeeks(); buildDrills();
+      alert('导入成功。');
+    }catch(e){ alert('文件格式不对：' + e.message); }
+  };
+  r.readAsText(f);
+  input.value = '';
+}
+
+/* =========================================================
+   跟读纠音
+   ========================================================= */
+const DRILLS = [
+  {g:'sound', en:'I think this is the third thing.', cn:'/θ/ 与 /ð/：舌尖轻触上齿，不要读成 s / z。'},
+  {g:'sound', en:'The weather is rather warm today.', cn:'/ð/ 在 weather、rather 里要"咬着舌尖"出声。'},
+  {g:'sound', en:'Very valuable, very vivid.', cn:'/v/：上齿咬下唇，不要读成 w。'},
+  {g:'sound', en:'Really rural, a red lorry.', cn:'/r/ 与 /l/：r 舌尖不碰上颚，l 舌尖顶上齿龈。'},
+  {g:'sound', en:'I had a bad apple and a black cat.', cn:'/æ/：嘴张大，下巴放低，不是 /e/。'},
+  {g:'sound', en:'This ship is a sheep.', cn:'/ɪ/ 与 /iː/：ship 短促，sheep 拉长。'},
+  {g:'sound', en:'The project is huge.', cn:'词尾辅音：project 的 /kt/、huge 的 /dʒ/ 要发出来。'},
+  {g:'link', en:'Not at all.', cn:'连读：no-ta-tall，三个词变成一个"词"。'},
+  {g:'link', en:'What are you doing?', cn:'连读：wha-ta-ya doing。'},
+  {g:'link', en:'I want to go, but I have to study.', cn:'弱读：to 读 /tə/，but 的 t 常失爆。'},
+  {g:'link', en:'Tell her I will call her later.', cn:'h 常被吞掉：tell-er, call-er。'},
+  {g:'link', en:'Would you like a cup of tea?', cn:'d + y 合并成 /dʒ/；a cup of 连成 a-cup-a。'},
+  {g:'chunk', en:'What I want to say / is that / it depends on the situation.', cn:'意群：在 / 处停顿，不要一词一停。'},
+  {g:'chunk', en:'The problem / is that / nobody wants to pay for it.', cn:'重音：problem、nobody、pay 三个词重读，其余轻带。'},
+  {g:'chunk', en:'If I had more time, / I would learn another language.', cn:'虚拟语气句：前半句升调，后半句降调。'}
+];
+let drillGroupCur = 'all';
+function buildDrills(){
+  const root = $('#drillRoot');
+  if(!root) return;
+  const list = DRILLS.filter(d => drillGroupCur === 'all' || d.g === drillGroupCur);
+  root.innerHTML = list.map((d) => {
+    const idx = DRILLS.indexOf(d);
+    return `<div class="sentence">
+    <div class="en">${d.en}</div>
+    <div class="cn">${d.cn}</div>
+    <div class="row">
+      <button class="btn small ghost" onclick="speakIdx(${idx}, 0.85)">听原声（慢）</button>
+      <button class="btn small ghost" onclick="speakIdx(${idx}, 0.65)">听原声（更慢）</button>
+      <button class="btn small ghost" onclick="drillRecord(this)">跟读录音</button>
+      <span class="muted small" style="align-self:center" data-state></span>
+    </div>
+  </div>`;
+  }).join('');
+}
+function speakIdx(i, rate){ speak(DRILLS[i].en, rate); }
+function drillGroup(g, btn){
+  drillGroupCur = g;
+  $$('[data-gbtn]').forEach(b => b.style.background = '');
+  if(btn) btn.style.background = 'var(--green-soft)';
+  buildDrills();
+}
+function speak(text, rate){
+  if(!('speechSynthesis' in window)){ alert('这个浏览器不支持语音朗读。'); return; }
+  try{ speechSynthesis.cancel(); }catch(e){}
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'en-US';
+  u.rate = rate || 0.9;
+  const voices = speechSynthesis.getVoices();
+  const en = voices.find(v => /en-US/i.test(v.lang) && /zira|aria|jenny|guy/i.test(v.name))
+          || voices.find(v => /en-US/i.test(v.lang))
+          || voices.find(v => /^en/i.test(v.lang));
+  if(en) u.voice = en;
+  speechSynthesis.speak(u);
+}
+if('speechSynthesis' in window){ speechSynthesis.onvoiceschanged = () => {}; }
+
+let drillRec = null, drillChunks = [], drillStream = null;
+async function drillRecord(btn){
+  const state = btn.parentElement.querySelector('[data-state]');
+  if(drillRec && drillRec.state === 'recording'){ drillRec.stop(); return; }
+  try{
+    drillStream = await navigator.mediaDevices.getUserMedia({audio:true});
+  }catch(e){ state.textContent = '麦克风被拒绝'; return; }
+  drillChunks = [];
+  drillRec = new MediaRecorder(drillStream);
+  drillRec.ondataavailable = e => { if(e.data.size) drillChunks.push(e.data); };
+  drillRec.onstop = () => {
+    const blob = new Blob(drillChunks, {type: drillRec.mimeType || 'audio/webm'});
+    const url = URL.createObjectURL(blob);
+    const row = btn.parentElement;
+    const old = row.parentElement.querySelector('.drill-audio');
+    if(old) old.remove();
+    const audio = document.createElement('audio');
+    audio.controls = true;
+    audio.src = url;
+    audio.className = 'drill-audio';
+    audio.style.cssText = 'width:100%;height:34px;margin-top:8px';
+    row.insertAdjacentElement('afterend', audio);
+    state.textContent = '已录，回听对比';
+    btn.textContent = '重新跟读';
+    drillStream.getTracks().forEach(t => t.stop());
+  };
+  drillRec.start();
+  btn.textContent = '停止';
+  state.textContent = '录音中…';
+  setTimeout(() => { if(drillRec && drillRec.state === 'recording') drillRec.stop(); }, 15000);
+}
+
+/* =========================================================
+   初始化
+   ========================================================= */
+document.addEventListener('DOMContentLoaded', () => {
+  buildPlan();
+  buildRoad();
+  buildPrompts();
+  buildRubric();
+  buildDrills();
+  renderLog();
+  renderWeeks();
+  renderVStats();
+  $('#wkDate').value = new Date().toISOString().slice(0,10);
+
+  // 支持用 #speak 这类地址直接打开某一页（桌面快捷方式、PWA 入口用）
+  const fromHash = location.hash.replace('#','');
+  if(fromHash && document.getElementById('page-'+fromHash)) go(fromHash);
+  window.addEventListener('hashchange', () => {
+    const p = location.hash.replace('#','');
+    if(p && document.getElementById('page-'+p)) go(p);
+  });
+
+  registerSW();
+  setupInstallTip();
+});
+
+/* =========================================================
+   PWA：注册 Service Worker + 安装引导
+   ========================================================= */
+function registerSW(){
+  if(!('serviceWorker' in navigator)) return;
+  // file:// 打开时注册会失败，静默跳过
+  if(location.protocol !== 'http:' && location.protocol !== 'https:') return;
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+
+function setupInstallTip(){
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const standalone = window.matchMedia('(display-mode: standalone)').matches
+    || window.navigator.standalone === true;
+  const dismissed = LS.get('installTipDismissed', false);
+  const el = document.getElementById('iosTip');
+  if(!el) return;
+  if(isIOS && !standalone && !dismissed){
+    setTimeout(() => el.classList.add('show'), 2500);
+  }
+  const closeBtn = document.getElementById('iosTipClose');
+  if(closeBtn) closeBtn.onclick = () => {
+    el.classList.remove('show');
+    LS.set('installTipDismissed', true);
+  };
+
+  // Android / 桌面 Chrome：捕获安装事件，显示一个安装按钮
+  let deferred = null;
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    deferred = e;
+    const b = document.getElementById('btnInstall');
+    if(b){
+      b.classList.remove('hide');
+      b.onclick = async () => {
+        if(!deferred) return;
+        deferred.prompt();
+        await deferred.userChoice;
+        deferred = null;
+        b.classList.add('hide');
+      };
+    }
+  });
+}
+</script>
+<div class="ios-tip" id="iosTip">
+  <div style="flex:1">
+    <b>装到手机桌面，像 App 一样用</b><br>
+    点 Safari 底部的「分享」按钮 → 选「添加到主屏幕」。装好后可离线使用，不用再连电脑。
+  </div>
+  <button id="iosTipClose" aria-label="关闭">×</button>
+</div>
+</body>
+</html>
