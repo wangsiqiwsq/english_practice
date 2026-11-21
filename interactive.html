@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>听力与对话 · 英语练习室</title>
+<meta name="theme-color" content="#2f6f4f">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<style>
+  :root{
+    --ink:#1d2433; --ink-2:#4a5468; --ink-3:#7c869c;
+    --bg:#f6f4ef; --card:#fff; --line:#e6e1d8;
+    --green:#2f6f4f; --green-soft:#e3efe7;
+    --amber:#b8762a; --amber-soft:#fbf0e0;
+    --red:#b24a3f; --red-soft:#fbe9e6;
+    --blue:#2f5d8a; --blue-soft:#e6eef7;
+    --radius:14px; --shadow:0 1px 2px rgba(29,36,51,.05),0 8px 24px -12px rgba(29,36,51,.18);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.65;
+       font-family:"Segoe UI","PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+  .shell{display:flex;min-height:100vh}
+  .side{width:220px;flex:0 0 220px;background:#fffdf9;border-right:1px solid var(--line);
+        padding:22px 14px;position:sticky;top:0;height:100vh}
+  .brand{font-weight:700;font-size:16px;margin-bottom:2px}
+  .sub{font-size:12px;color:var(--ink-3);margin-bottom:20px}
+  .nav{display:flex;flex-direction:column;gap:3px}
+  .nav button{text-align:left;background:none;border:0;border-radius:9px;padding:9px 11px;
+              font-size:14px;color:var(--ink-2);cursor:pointer;font-family:inherit;display:flex;gap:8px}
+  .nav button:hover{background:#f2efe8}
+  .nav button.on{background:var(--green-soft);color:var(--green);font-weight:600}
+  main{flex:1;min-width:0;padding:28px 34px 80px;max-width:920px}
+  .page{display:none}.page.on{display:block}
+  h1{font-size:23px;margin:0 0 6px}
+  h2{font-size:17px;margin:24px 0 10px}
+  .lead{color:var(--ink-2);margin:0 0 20px;max-width:70ch}
+  .muted{color:var(--ink-3);font-size:13px}
+  .small{font-size:13.5px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+        padding:18px 20px;box-shadow:var(--shadow)}
+  .btn{background:var(--green);color:#fff;border:0;border-radius:10px;padding:11px 18px;
+       font-size:14.5px;font-weight:600;cursor:pointer;font-family:inherit;min-height:44px}
+  .btn:hover{filter:brightness(1.07)}
+  .btn:disabled{background:#b9c4bd;cursor:not-allowed}
+  .btn.ghost{background:#fff;color:var(--green);border:1px solid #c6d8cd}
+  .btn.small{padding:7px 12px;font-size:13px;min-height:36px;border-radius:8px}
+  .btn-row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+  .tag{display:inline-block;font-size:12px;padding:1px 9px;border-radius:99px;background:#f0ede6;color:var(--ink-2)}
+  .tag.green{background:var(--green-soft);color:var(--green)}
+  .tag.amber{background:var(--amber-soft);color:var(--amber)}
+  .note{border-left:3px solid var(--amber);background:var(--amber-soft);padding:10px 14px;
+        border-radius:0 10px 10px 0;font-size:13.5px;color:#6b4a1d;margin:14px 0}
+  .note.green{border-left-color:var(--green);background:var(--green-soft);color:#234e38}
+  .note.blue{border-left-color:var(--blue);background:var(--blue-soft);color:#21456b}
+
+  /* ---------- 听力练习 ---------- */
+  .listen-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+  .q-index{font-size:12px;color:var(--ink-3);letter-spacing:1px}
+  .player{text-align:center;padding:18px 0 8px}
+  .play-btn{
+    width:96px;height:96px;border-radius:50%;border:0;cursor:pointer;font-family:inherit;
+    background:var(--green);color:#fff;font-size:13px;font-weight:700;line-height:1.2;
+    display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+    box-shadow:0 10px 26px -12px rgba(47,111,79,.8);
+  }
+  .play-btn:active{transform:scale(.97)}
+  .play-btn .ico{font-size:30px;line-height:1}
+  .play-btn.playing{background:var(--amber)}
+  .play-hint{font-size:12.5px;color:var(--ink-3);margin-top:10px}
+  .q-stem{font-size:16px;font-weight:600;margin:18px 0 12px;line-height:1.55}
+  .opts{display:grid;gap:9px}
+  .opt{
+    text-align:left;background:#fff;border:1px solid var(--line);border-radius:11px;
+    padding:12px 14px;font-size:14.5px;line-height:1.55;cursor:pointer;font-family:inherit;
+    color:var(--ink);display:flex;gap:10px;align-items:flex-start;
+  }
+  .opt .k{flex:0 0 auto;width:20px;height:20px;border-radius:50%;background:#f0ede6;
+          font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:2px}
+  .opt:hover{border-color:#b9cdbf;background:#fbfdfb}
+  .opt.right{border-color:var(--green);background:var(--green-soft)}
+  .opt.right .k{background:var(--green);color:#fff}
+  .opt.wrong{border-color:var(--red);background:var(--red-soft)}
+  .opt.wrong .k{background:var(--red);color:#fff}
+  .opt:disabled{cursor:default}
+  .explain{margin-top:14px;border-top:1px dashed var(--line);padding-top:12px;font-size:13.5px;line-height:1.7}
+  .explain b{color:var(--green)}
+  .script{
+    background:#fbfaf7;border:1px dashed var(--line);border-radius:10px;padding:12px 14px;
+    font-size:13.5px;line-height:1.8;margin-top:10px;white-space:pre-wrap;
+  }
+  .script .hl{background:#f7e6c8;border-radius:3px;padding:0 2px}
+  .progress-dots{display:flex;gap:5px;margin:14px 0 0;flex-wrap:wrap}
+  .dot{width:9px;height:9px;border-radius:50%;background:#dcd6c8}
+  .dot.ok{background:var(--green)}
+  .dot.no{background:var(--red)}
+  .dot.cur{box-shadow:0 0 0 3px var(--green-soft)}
+
+  /* ---------- 对话 ---------- */
+  .chat-wrap{display:grid;grid-template-columns:230px 1fr;gap:14px}
+  @media(max-width:860px){.chat-wrap{grid-template-columns:1fr}}
+  .scen{display:flex;flex-direction:column;gap:7px}
+  .scen button{
+    text-align:left;background:#fff;border:1px solid var(--line);border-radius:10px;
+    padding:10px 12px;cursor:pointer;font-family:inherit;font-size:13.5px;color:var(--ink);
+  }
+  .scen button:hover{border-color:#b9cdbf}
+  .scen button.on{border-color:var(--green);background:var(--green-soft);font-weight:600}
+  .scen button .lv{display:block;font-size:11.5px;color:var(--ink-3);font-weight:400;margin-top:2px}
+  .chat{
+    background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
+    display:flex;flex-direction:column;height:min(70vh,620px);
+  }
+  .chat-head{padding:11px 15px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .chat-head b{font-size:14px}
+  .chat-body{flex:1;overflow-y:auto;padding:15px;display:flex;flex-direction:column;gap:10px;background:#fbfaf7}
+  .msg{max-width:86%;padding:10px 13px;border-radius:13px;font-size:14px;line-height:1.6;white-space:pre-wrap}
+  .msg.bot{background:#fff;border:1px solid var(--line);align-self:flex-start;border-bottom-left-radius:4px}
+  .msg.me{background:var(--green);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+  .msg.tip{background:var(--blue-soft);color:#21456b;align-self:flex-start;font-size:13px;border:1px solid #cfe0ee;max-width:94%}
+  .msg.tip b{color:var(--blue)}
+  .msg.sys{background:#f0ede6;color:var(--ink-3);font-size:12.5px;align-self:center;max-width:96%}
+  .chat-input{border-top:1px solid var(--line);padding:10px;display:flex;gap:8px;background:#fff}
+  .chat-input textarea{
+    flex:1;resize:none;min-height:44px;max-height:120px;border:1px solid var(--line);
+    border-radius:10px;padding:10px 12px;font-family:inherit;font-size:16px;line-height:1.5;
+  }
+  .chat-input textarea:focus{outline:2px solid #cfe0d5;border-color:#a9c6b5}
+  .mic-hint{font-size:11.5px;color:var(--ink-3);padding:0 12px 10px;background:#fff}
+  .key-list li{margin:5px 0;font-size:13.5px;color:var(--ink-2)}
+  .key-list b{color:var(--ink)}
+  .score-pill{font-size:12px;background:var(--green-soft);color:var(--green);padding:2px 9px;border-radius:99px}
+  @media(max-width:680px){
+    .shell{display:block}
+    .side{position:fixed;left:0;right:0;bottom:0;top:auto;width:auto;height:auto;
+          border-right:0;border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom));
+          background:rgba(255,253,249,.97);backdrop-filter:blur(10px);z-index:100}
+    .brand,.sub{display:none}
+    .nav{display:grid;grid-template-columns:repeat(3,1fr)}
+    .nav button{flex-direction:column;gap:2px;padding:6px 0;font-size:10px;align-items:center;text-align:center}
+    main{padding:18px 14px calc(96px + env(safe-area-inset-bottom))}
+    .chat{height:min(62vh,560px)}
+    .play-btn{width:86px;height:86px}
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="side">
+    <div class="brand">听力与对话</div>
+    <div class="sub">不用自己准备材料</div>
+    <nav class="nav" id="nav">
+      <button data-page="listen" class="on">◉ 听力练习</button>
+      <button data-page="chat">◆ 人机对话</button>
+      <button onclick="location.href='index.html'">↩ 回练习室</button>
+    </nav>
+  </aside>
+  <main>
+    <!-- ========== 听力练习 ========== -->
+    <section class="page on" id="page-listen">
+      <h1>听力练习</h1>
+      <p class="lead">
+        点一下按钮，它会把一段话读给你听，<b>只读一遍</b>，然后出一道题。
+        练的不是"能不能听懂"，而是<b>一遍过之后还能不能记住、能不能选对</b>。
+      </p>
+
+      <div class="card">
+        <div class="listen-head">
+          <span class="q-index" id="qIndex">第 1 / 12 题</span>
+          <span class="tag" id="qType">短对话</span>
+        </div>
+
+        <div class="player">
+          <button class="play-btn" id="playBtn" onclick="playCurrent()">
+            <span class="ico">▶</span><span id="playTxt">播放</span>
+          </button>
+          <div class="play-hint" id="playHint">点一次，听一遍。可以再点一次重听。</div>
+        </div>
+
+        <div id="qArea"></div>
+      </div>
+
+      <div class="progress-dots" id="dots"></div>
+
+      <div class="btn-row" style="margin-top:16px">
+        <button class="btn" onclick="nextQuestion()">下一题</button>
+        <button class="btn ghost" onclick="restartSet()">从头再来</button>
+        <button class="btn ghost" onclick="toggleScript()">显示 / 隐藏原文</button>
+      </div>
+      <div id="scriptBox" class="script" style="display:none"></div>
+
+      <div class="note">
+        <b>机器朗读不是真人录音</b>——用它练"抓关键信息、记笔记、同义替换"够用，
+        但它替代不了真题音频的语速和口音。每天真正的精听还是要用真题。
+      </div>
+    </section>
+
+    <!-- ========== 人机对话 ========== -->
+    <section class="page" id="page-chat">
+      <h1>人机对话</h1>
+      <p class="lead">
+        先选一个场景，它会用英文跟你说话，你用英文回。
+        <b>回得不好也没关系</b>——每一轮都会给你一个更自然的说法。说完了可以点麦克风用语音输入。
+      </p>
+
+      <div class="chat-wrap">
+        <div class="scen" id="scenList"></div>
+        <div class="chat">
+          <div class="chat-head">
+            <b id="chatTitle">选一个场景开始</b>
+            <span class="score-pill" id="chatRound">0 / 0</span>
+          </div>
+          <div class="chat-body" id="chatBody">
+            <div class="msg bot">Hi! 先选左边的场景，我们就可以开始了。</div>
+          </div>
+          <div class="chat-input">
+            <textarea id="chatInput" placeholder="用英文回复…" rows="1"></textarea>
+            <button class="btn" onclick="sendMsg()" style="min-width:64px">发送</button>
+          </div>
+          <div class="mic-hint">
+            <button class="btn small ghost" onclick="voiceInput()" id="micBtn">🎤 语音输入</button>
+            <button class="btn small ghost" onclick="showHint()">💡 不知道怎么说</button>
+            <span id="micState" class="muted" style="margin-left:6px"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+const LSK = {
+  get(k, d){ try{ const v = localStorage.getItem('en.'+k); return v ? JSON.parse(v) : d; }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem('en.'+k, JSON.stringify(v)); }catch(e){} }
+};
+
+$$('#nav button').forEach(b => b.onclick = () => {
+  if(!b.dataset.page) return;
+  $$('.page').forEach(p => p.classList.remove('on'));
+  document.getElementById('page-'+b.dataset.page).classList.add('on');
+  $$('#nav button').forEach(x => x.classList.toggle('on', x === b));
+  window.scrollTo({top:0});
+});
+
+/* =========================================================
+   朗读
+   ========================================================= */
+let voicesReady = false;
+if('speechSynthesis' in window){
+  speechSynthesis.onvoiceschanged = () => { voicesReady = true; };
+  speechSynthesis.getVoices();
+}
+function pickVoice(){
+  const vs = speechSynthesis.getVoices() || [];
+  return vs.find(v => /en-US/i.test(v.lang) && /zira|aria|jenny|guy|samantha/i.test(v.name))
+      || vs.find(v => /en-US/i.test(v.lang))
+      || vs.find(v => /^en/i.test(v.lang));
+}
+function say(text, rate, onend){
+  if(!('speechSynthesis' in window)){
+    alert('这个浏览器不支持语音朗读，请用 Edge 或 Chrome。');
+    return;
+  }
+  try{ speechSynthesis.cancel(); }catch(e){}
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'en-US';
+  u.rate = rate || 0.9;
+  const v = pickVoice();
+  if(v) u.voice = v;
+  if(onend) u.onend = onend;
+  u.onerror = () => { if(onend) onend(); };
+  speechSynthesis.speak(u);
+}
+function speaking(on){
+  const b = $('#playBtn');
+  if(!b) return;
+  b.classList.toggle('playing', on);
+  $('#playTxt').textContent = on ? '播放中' : '再听一次';
+}
+
+/* =========================================================
+   题库
+   ========================================================= */
+const BANK = [
+  {
+    type:'短对话', script:'W: I thought the seminar started at nine.\nM: It was supposed to, but the professor sent an email this morning saying it would begin half an hour later.',
+    q:'When will the seminar actually begin?',
+    opts:['At 8:30','At 9:00','At 9:30','At 10:00'],
+    ans:2,
+    why:'关键句是 "begin half an hour later"。原定 9:00，推迟半小时 → 9:30。',
+    trap:'A 选项 8:30 是"提前半小时"，方向被反了；D 是随手加的整数，用来凑选项。'
+  },
+  {
+    type:'短对话', script:'M: You look exhausted. Did you stay up late again?\nW: Not really. I went to bed at eleven, but the neighbors were moving furniture until two in the morning.',
+    q:'Why is the woman tired?',
+    opts:['She went to bed very late.','She was woken up by noise.','She worked all night.','She moved furniture herself.'],
+    ans:1,
+    why:'她说自己 11 点就睡了，是邻居搬家具到凌晨两点——所以是被吵醒的。',
+    trap:'A 是"听起来最顺"的答案（累＝睡晚了），但她亲口否定了。"否定词后的信息"是六级最爱考的点。'
+  },
+  {
+    type:'日常场景', script:'Attention, passengers. The 4:15 train to Brighton has been cancelled because of a signal failure. Passengers may use their tickets on the 4:45 service, which will depart from platform 6 instead of platform 3.',
+    q:'What change was announced?',
+    opts:['The train is delayed by 30 minutes.','The train is cancelled and a later one leaves from another platform.','All trains to Brighton are suspended today.','Passengers must buy new tickets.'],
+    ans:1,
+    why:'4:15 取消；4:45 那班从 6 号站台而不是 3 号站台出发。两件事都要记：时间 + 站台变化。',
+    trap:'A 只抓到"晚了半小时"，漏了"取消"；C 过度概括成"全部停运"。'
+  },
+  {
+    type:'日常场景', script:'M: Have you decided where to go for the summer?\nW: I was thinking about Iceland, but the flights are crazy expensive in July. So I\'m leaning towards hiking in Scotland instead — it\'s cheaper and I can take the train.',
+    q:'What will the woman probably do?',
+    opts:['Fly to Iceland in July.','Go hiking in Scotland.','Stay at home all summer.','Take a train to Iceland.'],
+    ans:1,
+    why:'"leaning towards hiking in Scotland" 就是倾向去苏格兰；冰岛因为机票太贵被放弃。',
+    trap:'A 是她"考虑过"的，不是决定。听到 Iceland 就选，是典型的"抓词不抓逻辑"。'
+  },
+  {
+    type:'校园', script:'The library will extend its opening hours during the exam period. From next Monday, it will stay open until midnight on weekdays, and until ten on weekends. The 24-hour study rooms on the second floor will remain accessible with a student card.',
+    q:'What do we learn about the library?',
+    opts:['It will open 24 hours on weekends.','It will close later on weekdays than before.','The 24-hour rooms will be closed.','It will only open to graduates.'],
+    ans:1,
+    why:'工作日开到午夜（原来更早），周末到 10 点，24 小时自习室凭学生卡照常开放。',
+    trap:'A 把"周末 10 点"和"24 小时自习室"混在了一起；C 与原文相反。'
+  },
+  {
+    type:'校园', script:'W: I\'m thinking of dropping the chemistry course. The lab work is taking up all my time.\nM: Before you do that, talk to the advisor. You might be able to switch to the afternoon lab section instead.',
+    q:'What does the man suggest?',
+    opts:['Dropping the course immediately.','Speaking to an advisor about switching lab times.','Taking chemistry next year.','Doing the lab work on weekends.'],
+    ans:1,
+    why:'"talk to the advisor" + "switch to the afternoon lab section" 是建议的两部分。',
+    trap:'A 正是她"想做"的，被他拦住了。听力题里"被劝阻的做法"经常被设成干扰项。'
+  },
+  {
+    type:'原因', script:'Researchers found that students who took notes by hand remembered more of the lecture than those who typed. The researchers believe that writing by hand forces people to summarize, while typing encourages them to record words without processing them.',
+    q:'Why did handwriting lead to better memory?',
+    opts:['It is faster than typing.','It forces people to summarize rather than copy.','It makes the lecture shorter.','It reduces eye strain.'],
+    ans:1,
+    why:'"forces people to summarize" vs "record words without processing" 是直接因果。',
+    trap:'A 正好相反（手写更慢）；D 是原文没提的常识干扰项。'
+  },
+  {
+    type:'态度', script:'M: So the new policy is a complete success, isn\'t it?\nW: Well, it has certainly reduced paperwork. But whether it has actually improved patient care — that\'s still very much an open question.',
+    q:'What is the woman\'s attitude toward the policy?',
+    opts:['Fully supportive.','Completely opposed.','Partly positive but uncertain.','Indifferent.'],
+    ans:2,
+    why:'"has certainly reduced paperwork"（肯定一部分）+ "still very much an open question"（保留）→ 部分肯定、仍有疑问。',
+    trap:'A 只听了前半句；B 只听了后半句。态度题必须两边都算。'
+  },
+  {
+    type:'多信息', script:'The workshop will be held on Saturday, March 14th, from 2 to 5 pm in Room 204. Participants should bring their own laptops and register online by March the 10th. The fee is 20 dollars, but students pay only 5.',
+    q:'Which of the following is NOT mentioned?',
+    opts:['The date and time.','The room number.','The instructor\'s name.','The registration deadline.'],
+    ans:2,
+    why:'时间、地点、截止日期、费用都提到了，唯一没提的是讲师姓名。',
+    trap:'"NOT mentioned" 题最忌讳听到一个选项就选。"费 20 学生 5"这种额外信息，是专门用来消耗你注意力的。'
+  },
+  {
+    type:'数字', script:'M: The survey covered 1,200 people, but only about a quarter of them responded.\nW: That\'s still 300 responses — enough to be meaningful, I suppose.',
+    q:'How many people responded to the survey?',
+    opts:['1,200','600','300','250'],
+    ans:2,
+    why:'1200 的四分之一 = 300，女生也直接说了 "That\'s still 300"。',
+    trap:'A 是总人数；D 是 "a quarter" 听成了 250 的错觉。数字题一定要落笔。'
+  },
+  {
+    type:'主旨', script:'Today I want to talk about why we forget. Forgetting is not a failure of memory — it is a feature. If we remembered every detail of every day, our brains would be overwhelmed. What matters is not storage, but knowing what to keep.',
+    q:'What is the main idea of the talk?',
+    opts:['Forgetting is a sign of memory failure.','Forgetting serves a useful purpose.','People should train their memory daily.','The brain stores every detail.'],
+    ans:1,
+    why:'"Forgetting is not a failure — it is a feature" 是主旨句，后面的解释都是支撑。',
+    trap:'A 与原文相反。主旨题的答案通常在开头 1–3 句，而且要能覆盖整段。'
+  },
+  {
+    type:'术语', script:'The term "blue light" refers to the short wavelengths at the blue end of the visible spectrum. Screens emit a lot of it. Some studies suggest it can delay the release of melatonin, the hormone that helps us fall asleep.',
+    q:'What does the speaker say about blue light?',
+    opts:['It is a type of melatonin.','It may delay the release of a sleep hormone.','It is only produced by the sun.','It has no effect on sleep.'],
+    ans:1,
+    why:'"delay the release of melatonin" 直接对应 B；melatonin 后面紧跟的同位语"帮助入睡的激素"就是解释。',
+    trap:'A 把两个概念混在一起；C 与"屏幕会发出大量蓝光"矛盾。'
+  }
+];
+
+function esc(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+let qIdx = 0;
+let qState = BANK.map(() => null);   // null 未答 / 0 错 / 1 对
+let scriptOpen = false;
+
+function renderDots(){
+  const d = $('#dots');
+  if(!d) return;
+  d.innerHTML = BANK.map((_, i) => {
+    const cls = qState[i] === 1 ? 'ok' : qState[i] === 0 ? 'no' : '';
+    return `<span class="dot ${cls} ${i === qIdx ? 'cur' : ''}"></span>`;
+  }).join('');
+}
+
+function renderQuestion(){
+  const q = BANK[qIdx];
+  $('#qIndex').textContent = `第 ${qIdx+1} / ${BANK.length} 题`;
+  $('#qType').textContent = q.type;
+  $('#qArea').innerHTML = `
+    <div class="q-stem">${esc(q.q)}</div>
+    <div class="opts" id="optBox">
+      ${q.opts.map((o, i) => `<button class="opt" onclick="answer(${i})">
+        <span class="k">${'ABCD'[i]}</span><span>${esc(o)}</span></button>`).join('')}
+    </div>`;
+  $('#scriptBox').textContent = q.script;
+  $('#scriptBox').style.display = scriptOpen ? 'block' : 'none';
+  $('#playTxt').textContent = '播放';
+  renderDots();
+}
+
+function playCurrent(){
+  const q = BANK[qIdx];
+  speaking(true);
+  say(q.script, 0.88, () => speaking(false));
+  $('#playHint').textContent = '听完了？选出答案。可以再点一次重听。';
+}
+
+function answer(i){
+  const q = BANK[qIdx];
+  if(qState[qIdx] !== null) return;
+  const ok = i === q.ans;
+  qState[qIdx] = ok ? 1 : 0;
+  const opts = $$('#optBox .opt');
+  opts.forEach((b, k) => {
+    b.disabled = true;
+    if(k === q.ans) b.classList.add('right');
+    if(k === i && !ok) b.classList.add('wrong');
+  });
+  const box = document.createElement('div');
+  box.className = 'explain';
+  box.innerHTML = `<b>${ok ? '对' : '错'}</b>　正确答案：${'ABCD'[q.ans]}<br>
+    <span style="color:var(--ink-2)">${esc(q.why)}</span><br>
+    <span class="muted">陷阱：${esc(q.trap)}</span>`;
+  $('#qArea').appendChild(box);
+  renderDots();
+}
+
+function nextQuestion(){
+  qIdx = (qIdx + 1) % BANK.length;
+  renderQuestion();
+}
+function restartSet(){
+  qIdx = 0;
+  qState = BANK.map(() => null);
+  renderQuestion();
+}
+function toggleScript(){
+  scriptOpen = !scriptOpen;
+  $('#scriptBox').style.display = scriptOpen ? 'block' : 'none';
+}
+
+/* =========================================================
+   对话引擎
+   ========================================================= */
+const SCENARIOS = [
+  {
+    id:'self', title:'自我介绍 / 口语考试开场', lv:'L1 · 必须会',
+    open:'Hi, I\'m your speaking partner today. Let\'s start simple — could you introduce yourself in a few sentences?',
+    turns:[
+      { q:'What do you study, and why did you choose it?',
+        keys:['study','major','computer','engineer','business','because','interest','choose'],
+        sample:'I\'m a sophomore majoring in computer science. I chose it because I\'ve always been curious about how apps work, and I wanted to build things people actually use.',
+        why:'先说专业（majoring in…），再给一个具体原因，别只说 "I like it".' },
+      { q:'What do you usually do in your free time?',
+        keys:['free time','watch','cartoon','read','play','basketball','music','run','relax'],
+        sample:'I watch American cartoons with the subtitles off — it started as fun, but it turned out to be good listening practice. I also go running a few times a week.',
+        why:'给一个"具体到能想象"的爱好，加一句它对你的意义，比列三个爱好更有说服力。' },
+      { q:'What is one thing you want to improve about your English?',
+        keys:['speaking','listening','improve','vocabulary','fluent','nervous','speak'],
+        sample:'My listening is actually decent — I can follow about 95% of a lecture. But speaking is another story: I can understand it in my head, yet the words won\'t come out.',
+        why:'"A is fine, but B is another story" 是很好用的对比句式，考官会记住。' },
+      { q:'What are your plans after graduation?',
+        keys:['plan','graduate','work','job','study','abroad','master','company','future'],
+        sample:'I\'d like to work for a tech company for a couple of years first, then decide whether to go for a master\'s. I want to know what problems are real before I choose what to study.',
+        why:'"先…再决定"的结构（first, then decide whether）显得有思考，不是背答案。' }
+    ]
+  },
+  {
+    id:'campus', title:'校园生活', lv:'L1 · 日常',
+    open:'Hey, you look busy. How\'s the semester going so far?',
+    turns:[
+      { q:'How many courses are you taking this term?',
+        keys:['course','class','take','five','six','four','term','semester'],
+        sample:'I\'m taking six courses this term, which is a bit more than I can handle. Two of them have weekly labs, so my schedule is pretty packed.',
+        why:'数字 + 一个后果（which is…），比只报数字更像真实对话。' },
+      { q:'Which one is the hardest? Why?',
+        keys:['hardest','difficult','hard','because','math','physics','exam','assignment'],
+        sample:'Probably data structures. It\'s not that the concepts are hard — it\'s that every assignment takes me hours to debug.',
+        why:'"It\'s not that… — it\'s that…" 把原因说细，是拿高分的关键句式。' },
+      { q:'Do you study better alone or with others?',
+        keys:['alone','group','together','library','quiet','better','study'],
+        sample:'It depends. For memorizing things I need quiet, so I go to the library alone. But for problem sets, studying with a friend saves me a lot of time.',
+        why:'"It depends" + 分情况，是避免绝对化的万能回答。' },
+      { q:'What do you do when you feel stressed?',
+        keys:['stress','relax','run','music','sleep','walk','talk','friend'],
+        sample:'I usually go for a run. It sounds simple, but twenty minutes outside clears my head better than anything else.',
+        why:'具体动作 + 一句"为什么有效"，比 "I listen to music" 有画面。' }
+    ]
+  },
+  {
+    id:'job', title:'兼职面试', lv:'L2 · 场景',
+    open:'Thanks for coming in. So, you\'re applying for the part-time assistant position — tell me a little about yourself.',
+    turns:[
+      { q:'Why do you want this job?',
+        keys:['want','job','experience','money','learn','skill','interest','apply'],
+        sample:'Two reasons. I want to earn some of my own money, and more importantly, I want to see how a real team works — I\'ve only ever studied in classrooms.',
+        why:'"Two reasons" 先给结构，再展开，面试官最吃这一套。' },
+      { q:'How many hours can you work each week?',
+        keys:['hour','week','ten','eight','weekend','available','time','schedule'],
+        sample:'I can do about ten hours a week — mostly weekends and Wednesday afternoons. My classes are packed on Monday and Tuesday.',
+        why:'给数字 + 具体时段，显得可信；只说 "anytime" 反而让人怀疑。' },
+      { q:'Have you done anything similar before?',
+        keys:['before','experience','volunteer','worked','helped','organized','club','no'],
+        sample:'Not exactly a paid job, but I ran the registration desk for our department\'s open day last year — checking names, answering questions, dealing with problems on the spot.',
+        why:'没经验就换一个"接近的经验"，并列出具体动作（checking, answering, dealing）。' },
+      { q:'What would you do if a customer got angry?',
+        keys:['angry','customer','listen','calm','sorry','help','solve','polite','explain'],
+        sample:'First I\'d let them finish without interrupting. Then I\'d repeat the problem back to make sure I understood it, and offer what I can actually do — not what they hope for.',
+        why:'"First… Then…" 把处理流程说清楚；"不是承诺做不到的事"这句会加分。' }
+    ]
+  },
+  {
+    id:'travel', title:'旅行与酒店', lv:'L2 · 场景',
+    open:'Good evening, welcome to the Riverside Hotel. Do you have a reservation with us?',
+    turns:[
+      { q:'I can\'t find your booking. Could you give me your name and the dates?',
+        keys:['name','night','date','book','reservation','from','until','stay'],
+        sample:'Sure — it\'s Li Wei, booked for three nights, from Friday the 12th to Monday the 15th. I booked it online about two weeks ago.',
+        why:'姓名 + 几晚 + 具体日期，三样一次给全，避免来回追问。' },
+      { q:'We only have a room facing the street. Is that all right?',
+        keys:['street','noise','quiet','fine','okay','change','another','yes'],
+        sample:'I\'d prefer a quiet room if one opens up — I have an early train. If nothing else is available tonight, the street-side room is fine for now.',
+        why:'先表明偏好（I\'d prefer），再给退路（if… is fine for now），既礼貌又不吃亏。' },
+      { q:'Would you like breakfast included? It\'s fifteen dollars extra.',
+        keys:['breakfast','include','no','yes','extra','thanks','skip','coffee'],
+        sample:'I\'ll skip breakfast, thanks — I\'m leaving before seven. Is there a café nearby that opens early?',
+        why:'拒绝 + 给理由 + 追问一个有用信息，比干巴巴说 "No, thanks" 自然得多。' },
+      { q:'Is there anything else I can help you with?',
+        keys:['wifi','password','taxi','airport','wake','call','help','thanks','recommend'],
+        sample:'Two things, actually: the Wi-Fi password, and could you book me a taxi for six thirty tomorrow morning?',
+        why:'"Two things, actually" 是很地道的过渡；把需求编号说，效率高。' }
+    ]
+  },
+  {
+    id:'opinion', title:'观点讨论', lv:'L3 · 抽象',
+    open:'Let\'s talk about something bigger. Do you think social media brings people closer together, or further apart?',
+    turns:[
+      { q:'Interesting. Can you give me a concrete example?',
+        keys:['example','friend','family','wechat','group','chat','far','distance','for instance'],
+        sample:'My grandparents live in another province. We video-call every Sunday, and honestly, I probably talk to them more now than when I lived closer. That\'s the "closer" side.',
+        why:'抽象题必须落到一个具体的人或场景，否则会被追问到崩。' },
+      { q:'But doesn\'t it also make people more isolated?',
+        keys:['yes','isolate','lonely','alone','however','but','superficial','compare'],
+        sample:'It does, in a different way. When everyone\'s highlight reel is on display, it\'s easy to feel behind. So it connects us across distance and isolates us in the same room.',
+        why:'承认对方（It does）+ 补充条件（in a different way），是"让步–转折"的标准结构。' },
+      { q:'So what should we do about it?',
+        keys:['should','limit','balance','use','control','time','rule','offline','better'],
+        sample:'I don\'t think the answer is quitting. It\'s more about deciding what it\'s for — staying in touch, not performing. For me that means no scrolling before bed.',
+        why:'拒绝极端方案（not quitting）+ 给一个可执行的小规则，比喊口号有说服力。' }
+    ]
+  }
+];
+
+let scen = null, turnIdx = 0, correctTurns = 0;
+
+function renderScenList(){
+  const root = $('#scenList');
+  if(!root) return;
+  root.innerHTML = SCENARIOS.map(s => `
+    <button data-id="${s.id}" onclick="startScen('${s.id}')">
+      ${esc(s.title)}<span class="lv">${esc(s.lv)}</span>
+    </button>`).join('');
+}
+
+function startScen(id){
+  scen = SCENARIOS.find(s => s.id === id);
+  turnIdx = 0;
+  correctTurns = 0;
+  $$('#scenList button').forEach(b => b.classList.toggle('on', b.dataset.id === id));
+  $('#chatTitle').textContent = scen.title;
+  $('#chatBody').innerHTML = '';
+  addMsg('bot', scen.open);
+  updateRound();
+  setTimeout(() => addMsg('sys', '轮到你了。用英文回一句就行，不用完美。'), 400);
+}
+
+function addMsg(kind, text){
+  const body = $('#chatBody');
+  const d = document.createElement('div');
+  d.className = 'msg ' + kind;
+  d.innerHTML = text;
+  body.appendChild(d);
+  body.scrollTop = body.scrollHeight;
+  return d;
+}
+
+function updateRound(){
+  $('#chatRound').textContent = scen ? `${turnIdx} / ${scen.turns.length}` : '0 / 0';
+}
+
+function sendMsg(){
+  if(!scen){ alert('先在左边选一个场景。'); return; }
+  const inp = $('#chatInput');
+  const text = inp.value.trim();
+  if(!text) return;
+
+  if(turnIdx >= scen.turns.length){
+    addMsg('sys', '这个场景已经聊完了。点左边换个场景，或者点「从头开始」。');
+    return;
+  }
+
+  addMsg('me', esc(text));
+  inp.value = '';
+  inp.style.height = '44px';
+
+  const turn = scen.turns[turnIdx];
+  const low = text.toLowerCase();
+  const hit = turn.keys.filter(k => low.includes(k));
+  const lenOk = text.split(/\s+/).length >= 4;
+
+  if(hit.length >= 2 || (hit.length >= 1 && lenOk)){
+    correctTurns++;
+    addMsg('tip', `<b>这次接住了。</b>你用了 ${hit.map(h=>'「'+h+'」').join('、')} 这类词，方向对。<br>更自然的说法：<br><i>${esc(turn.sample)}</i><br><span style="opacity:.8">${esc(turn.why)}</span>`);
+  } else if(lenOk){
+    addMsg('tip', `<b>意思能懂，但没踩到点。</b>这题想问的是「${esc(turn.q)}」。<br>可以这样说：<br><i>${esc(turn.sample)}</i><br><span style="opacity:.8">${esc(turn.why)}</span>`);
+  } else {
+    addMsg('tip', `<b>太短了，撑不住一轮。</b>至少给两句：一句回答 + 一句补充（原因、例子或感受）。<br>参考：<br><i>${esc(turn.sample)}</i>`);
+  }
+
+  turnIdx++;
+  updateRound();
+
+  if(turnIdx < scen.turns.length){
+    setTimeout(() => addMsg('bot', scen.turns[turnIdx].q), 500);
+  } else {
+    setTimeout(() => {
+      addMsg('sys', `场景结束：接住 ${correctTurns} / ${scen.turns.length} 轮。点左边换个场景继续。`);
+    }, 500);
+  }
+}
+
+function showHint(){
+  if(!scen || turnIdx >= scen.turns.length){
+    addMsg('sys', '先选场景，或者这个场景已经结束了。');
+    return;
+  }
+  const turn = scen.turns[turnIdx];
+  addMsg('tip', `<b>这题在问：</b>${esc(turn.q)}<br><b>可以用的词：</b>${turn.keys.slice(0,5).map(k=>'「'+k+'」').join('、')}<br><b>一句参考：</b><br><i>${esc(turn.sample)}</i>`);
+}
+
+/* 语音输入（安卓 Chrome/Edge 支持，其他浏览器会提示） */
+function voiceInput(){
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SR){ $('#micState').textContent = '这个浏览器不支持语音输入，直接打字也一样'; return; }
+  try{
+    const r = new SR();
+    r.lang = 'en-US';
+    r.interimResults = false;
+    r.maxAlternatives = 1;
+    $('#micState').textContent = '在听…';
+    r.onresult = e => {
+      const t = e.results[0][0].transcript;
+      $('#chatInput').value = ($('#chatInput').value + ' ' + t).trim();
+      $('#micState').textContent = '识别到了，点发送';
+    };
+    r.onerror = e => { $('#micState').textContent = '识别失败：' + e.error; };
+    r.onend = () => { if($('#micState').textContent === '在听…') $('#micState').textContent = ''; };
+    r.start();
+  }catch(e){
+    $('#micState').textContent = '语音输入启动失败，直接打字吧';
+  }
+}
+
+/* 输入框自适应高度 */
+const ci = document.getElementById('chatInput');
+if(ci){
+  ci.addEventListener('input', () => {
+    ci.style.height = 'auto';
+    ci.style.height = Math.min(120, ci.scrollHeight) + 'px';
+  });
+  ci.addEventListener('keydown', e => {
+    if(e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); sendMsg(); }
+  });
+}
+
+/* 初始化 */
+renderScenList();
+renderQuestion();
+renderDots();
+
+if ('serviceWorker' in navigator && (location.protocol === 'http:' || location.protocol === 'https:')) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+</script>
+</body>
+</html>
